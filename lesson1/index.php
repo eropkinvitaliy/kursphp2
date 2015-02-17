@@ -1,7 +1,2 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Vitaliy
- * Date: 17.02.2015
- * Time: 20:12
- */ 
+header('Location: http://localhost/php-2/lesson1/view/view_main_news.php');
