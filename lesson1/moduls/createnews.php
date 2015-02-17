@@ -1,6 +1,5 @@
 <?php
 include '/bd.php';
-include '../config/lib_fun.php';
 $ntitle = $_POST['title'];
 $ntext = $_POST['newstext'];
 $now = date('H:i:s  d-m-Y');
