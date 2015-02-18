@@ -8,14 +8,16 @@
 <body>
 <h3>Добавление новостей</h3>
 
-<form action="../moduls/createnews.php" method="POST">
-    Заголовок новости: <input type="text" Size=70 name="title"><br>
-    Ваше имя: <input type="text" Size=50 name="users"><br>
-    Текст <textarea name="newstext" cols=60 rows=6>
-    </textarea>
+<form action="./create_news.php" method="POST">
+    Заголовок новости: <input type="text" Size=70 name="title" required=""><br>
+    Ваше имя: <input type="text" Size=50 name="users" required=""><br>
+    Текст <textarea name="newstext" cols=60 rows=6 required=""> </textarea>
     <br><br>
     <input type="Submit" Value="Ok">
     <input type="reset" Value=" Очистить ">
 </form>
+<div>
+    <br> <p><a href="./index.php">Вернуться к списку новостей</a></p>
+</div>
 </body>
 </html>

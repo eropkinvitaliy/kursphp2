@@ -7,10 +7,26 @@ function Sql_connect()
 function Sql_query($sql) {
     Sql_connect();
     $res = mysql_query($sql);
-    $news = [];
-    while (false !== $row = mysql_fetch_assoc($res)) {
-        $news[] = $row;
+    $temp = [];
+    while (false !== $row = mysql_fetch_array($res)) {
+        $temp[] = $row;
     }
-    return $news;
+    return $temp;
+}
+function Is_Get () {
+if (isset($_GET['id'])) {
+    return true;
+}
+    else {
+        return die('ошибка открытия текста новости');
+    }
+}
+function Is_Post () {
+    if (isset($_POST['title']) && isset($_POST['users']) && isset($_POST['newstext'])) {
+        return true;
+    }
+    else {
+        return die('ошибка отправлены пустые данные');
+    }
 }
 ?>
