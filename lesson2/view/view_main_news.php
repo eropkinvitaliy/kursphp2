@@ -11,7 +11,7 @@
 <h1>Страница новостей</h1>
 
 <div>
-    <?php foreach ($result as $row) { ?>
+    <?php foreach ($bd->temp as $row) { ?>
         <p><a href="./full_news.php?id=<?php echo $row['id'] ?>">
                 <?php echo addslashes($row['title']); ?></a></p>
         <p style="color: #773300 "> Добавил: <?php echo $row['user_n'] . '.'; ?>

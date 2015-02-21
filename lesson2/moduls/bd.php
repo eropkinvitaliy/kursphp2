@@ -1,30 +1,41 @@
 <?php
-require_once __DIR__ . '/../config/sql.php';
-function News_getAll()
+
+/*Создайте класс, работающий с базой данных
+ В его конструкторе – подключайтесь к БД
+ Его методы пусть умеют добавлять новую запись в таблицу, обновлять существующую и
+получать список записей*/
+
+class Database_work
 {
-    $sql = "SELECT * FROM news ORDER BY data_c";
-    return Sql_query($sql);
-}
-function News_getString($id_n)
-{
-    $sql = "SELECT * FROM news WHERE id = '$id_n'";
-    return Sql_query($sql);
-}
-function News_Insert()
-{
-    Sql_connect();
-    $ntitle = addslashes($_POST['title']);
-    $ntext = addslashes($_POST['newstext']);
-    $now = date('H:i:s  d-m-Y');
-    $nuser = addslashes($_POST['users']);
-    $sql = "INSERT INTO news(title,text_f,data_c,user_n) VALUES ('$ntitle','$ntext','$now','$nuser')";
-    mysql_query($sql);
-    unset ($_POST['title']);
-    unset ($_POST['user']);
-    if ($sql) {
-        return true;
+    public $bdname;
+    public $tabname;
+    private $sql;
+    private $res;
+    public $temp;
+    private $row;
+
+    public function __construct($bdname)
+    {
+        $this->bdname = $bdname;
+        mysql_connect('localhost', 'root', '') or die('Нет коннекта');
+        mysql_select_db($bdname) or die('Нет базы');
     }
-    else {
-        return die ('Запись не добавлена');
+
+    public function viewbase()
+    {
+        $this->sql = "SELECT * FROM news ORDER BY data_c";
+        return $this->Sql_qwery(sql);
     }
+
+    public function Sql_qwery($sql)
+    {
+        $this->res = mysql_query($this->sql);
+        $this->temp = [];
+        while (false !== $this->row = mysql_fetch_assoc($this->res)) {
+            $this->temp[] = $this->row;
+        }
+        return $this->temp;
+    }
+
 }
+?>
