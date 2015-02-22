@@ -1,5 +1,4 @@
 <?php
-
 include __DIR__ . './moduls/bd.php';
 $bd = new Database_work('mynews');
 $bd->viewbase();
