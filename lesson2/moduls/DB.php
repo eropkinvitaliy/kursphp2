@@ -28,12 +28,9 @@ class DB
         return $arr;
     }
     public function findAll($table) {
-        $sql = 'SELECT * FROM '.$table.' ORDER BY data_c DESC';
+        $sql = 'SELECT * FROM '.$table;
         return $this->query($sql);
     }
 }
 
 ?>
-findAll($table)
- публичный
- который используя нужный защищенный метод вернет вам все записи из указанной таблицы
