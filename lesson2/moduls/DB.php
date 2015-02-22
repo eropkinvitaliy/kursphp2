@@ -19,7 +19,9 @@ class DB
         }
 
     }
-    protected function query($sql) {
+
+    protected function query($sql)
+    {
         $res = mysql_query($sql);
         $arr = [];
         while (false !== $row = mysql_fetch_assoc($res)) {
@@ -27,13 +29,10 @@ class DB
         }
         return $arr;
     }
-    public function findAll($table) {
-        $sql = 'SELECT * FROM '.$table;
-        return $this->query($sql);
-    }
-    public function News_getAll($table)
+
+    public function findAll($table)
     {
-        $sql = 'SELECT * FROM '.$table;
+        $sql = 'SELECT * FROM ' . $table;
         return $this->query($sql);
     }
 }

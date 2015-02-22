@@ -1,9 +1,7 @@
 <?php
-include __DIR__ . '/moduls/DB.php';
-include __DIR__ . '/moduls/DB_NEWS.php';
-$db = new DB();
+
+include __DIR__ . '/moduls/func.php';
 $table = 'news';
-$db_news = new DB_NEWS();
-$news = $db_news->News_getAll($table);
+$news = News_getAll($table);
 var_dump($news);
 ?>
