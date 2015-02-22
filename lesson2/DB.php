@@ -7,8 +7,16 @@ class DB
         mysql_connect('localhost', 'root', '') or die('Нет коннекта');
         mysql_select_db('mynews') or die('Нет базы');
     }
-    public function execute ($sql) {
-        
+
+    public function execute($sql)
+    {
+        $this->res = mysql_query($this->sql);
+        if (res) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
 
