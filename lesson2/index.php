@@ -1,4 +1,4 @@
 <?php
-include __DIR__ . './moduls/db.php';
+include __DIR__ . './moduls/DB.php';
 new db('mynews');
 ?>
