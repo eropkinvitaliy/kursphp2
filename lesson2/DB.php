@@ -12,7 +12,7 @@ class DB
 
     public function execute($sql)
     {
-        $res = mysql_query($this->sql);
+        $res = mysql_query($sql);
         if ($res) {
             return true;
         } else {
