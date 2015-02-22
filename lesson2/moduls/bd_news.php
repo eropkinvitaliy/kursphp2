@@ -13,12 +13,6 @@
 class Database_work
 {
     public $bdname;
-    public $tabname;
-    protected $id_n;
-    private $sql;
-    private $res;
-    public $temp;
-    private $row;
 
     public function __construct($bdname)
     {
