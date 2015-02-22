@@ -31,6 +31,11 @@ class DB
         $sql = 'SELECT * FROM '.$table;
         return $this->query($sql);
     }
+    public function News_getAll($table)
+    {
+        $sql = 'SELECT * FROM '.$table;
+        return $this->query($sql);
+    }
 }
 
 ?>
