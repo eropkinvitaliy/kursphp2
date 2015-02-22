@@ -2,7 +2,6 @@
 
 class DB
 {
-    public $sql;
 
     public function __construct()
     {
