@@ -5,10 +5,10 @@
     <title>Текст статьи</title>
 </head>
 <body>
-<h2><?php echo addslashes($bd->temp[0]['title']); ?></h2>
+<h2><?php echo $bd->temp[0]['title']; ?></h2>
 
 <div>
-    <p><?php echo addslashes($bd->temp[0]['text_f']); ?></p>
+    <p><?php echo $bd->temp[0]['text_f']; ?></p>
 </div>
 <div>
     <br> <p><a href="./index.php">Вернуться к списку новостей</a></p>
