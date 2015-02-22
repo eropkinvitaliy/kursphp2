@@ -1,8 +1,8 @@
 <?php
 include __DIR__ . '/moduls/DB.php';
-$news = new db();
+$DB = new DB();
 $sql = "SELECT * FROM news ORDER BY data_c DESC";
-if (!($news->execute($sql))) {
+if (!($DB->execute($sql))) {
     die ('Ошибка запроса');
 }
 ?>
