@@ -10,7 +10,7 @@
 классы новостей и базы данных*/
 
 
-class Database_work
+class bd_news
 {
     public $bdname;
 
