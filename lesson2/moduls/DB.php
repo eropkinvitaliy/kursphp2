@@ -9,7 +9,7 @@ class DB
         mysql_select_db('mynews') or die('Нет базы');
     }
 
-    public function execute($sql)
+    protected function execute($sql)
     {
         $res = mysql_query($sql);
         if ($res) {
@@ -19,7 +19,7 @@ class DB
         }
 
     }
-    public function query($sql) {
+    protected function query($sql) {
         $res = mysql_query($sql);
         $arr = [];
         while (false !== $row = mysql_fetch_assoc($res)) {
@@ -27,9 +27,13 @@ class DB
         }
         return $arr;
     }
+    public function findAll($table) {
+        $sql = "SELECT * FROM news ORDER BY data_c DESC";
+        return $this->query($sql);
+    }
 }
 
 ?>
-сделайте еще один метод
-только назовите его query($sql)
- и пусть он умеет у вас выполнить запрос и вернуть все результаты его исполнения
+findAll($table)
+ публичный
+ который используя нужный защищенный метод вернет вам все записи из указанной таблицы
