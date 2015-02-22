@@ -2,6 +2,8 @@
 
 class DB
 {
+    public $sql;
+
     public function __construct()
     {
         mysql_connect('localhost', 'root', '') or die('Нет коннекта');
@@ -10,8 +12,8 @@ class DB
 
     public function execute($sql)
     {
-        $this->res = mysql_query($this->sql);
-        if (res) {
+        $res = mysql_query($this->sql);
+        if ($res) {
             return true;
         } else {
             return false;
