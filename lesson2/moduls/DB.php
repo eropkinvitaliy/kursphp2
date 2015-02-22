@@ -28,7 +28,7 @@ class DB
         return $arr;
     }
     public function findAll($table) {
-        $sql = "SELECT * FROM news ORDER BY data_c DESC";
+        $sql = 'SELECT * FROM '.$table.' ORDER BY data_c DESC';
         return $this->query($sql);
     }
 }
