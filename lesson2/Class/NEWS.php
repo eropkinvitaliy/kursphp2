@@ -1,5 +1,5 @@
 <?php
-require_once './Article.php';
+require_once __DIR__.'/Article.php';
 
 class NEWS extends Article
 {
