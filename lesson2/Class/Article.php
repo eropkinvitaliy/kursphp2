@@ -2,11 +2,15 @@
 
 abstract class Article
 {
-    abstract protected function CreateRecord($RecTitle, $RecPreview, $RecText, $RecTags);
+    abstract public function News_create($table);
 
-    abstract protected function GetAllRecords();
+    abstract public function News_getAll($table);
 
-    abstract protected function GetRecordById($RecId);
+    abstract public function News_getString($table, $id_new);
 
-    abstract protected function UpdateRecord($RecId, $ParamsArr);
+    abstract public function Is_Get($var);
+
+    abstract public function Is_Post();
+
+    abstract protected static function getDb();
 }
