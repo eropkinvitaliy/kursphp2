@@ -6,7 +6,7 @@ public function __construct()
 {
     mysql_connect('localhost','root','');mysql_select_db('mynews');
 }
-    public function query($sql, $class = 'stdClass')
+    public function queryAll($sql, $class = 'stdClass')
     {
         $res = mysql_query($sql);
         if (false === $res) {
@@ -17,5 +17,9 @@ public function __construct()
             $ret [] = $row;
         }
         return $ret;
+    }
+    public function queryOne($sql, $class = 'stdClass')
+    {
+        return $this->queryAll($sql, $class)[0];
     }
 } 
