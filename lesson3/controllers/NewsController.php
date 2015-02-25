@@ -14,4 +14,5 @@ class NewsController
         $item = News::getOne($id);
         include __DIR__ . '/../views/news/one.php';
     }
+
 } 

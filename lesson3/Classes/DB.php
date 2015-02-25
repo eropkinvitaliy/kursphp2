@@ -22,4 +22,12 @@ public function __construct()
     {
         return $this->queryAll($sql, $class)[0];
     }
+    public function queryAdd($sql)
+    {
+        $res = mysql_query($sql);
+        if (false === $res) {
+            return false;
+        }
+        return true;
+    }
 } 

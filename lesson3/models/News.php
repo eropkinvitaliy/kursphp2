@@ -1,22 +1,24 @@
 <?php
 
-require_once __DIR__ . '/../Classes/DB.php';
-class News {
-
+class News
+    extends AbstractModel
+{
     public $id;
     public $title;
-    public $text_f;
-    public $data_c;
-    public $user_n;
+    public $text;
+    public $data;
+    public $user;
 
-    public static function getAll()
+    protected static $table = 'news';
+    protected static $class = 'News';
+
+    public static function addOne($title,$text,$user)
     {
         $db = new DB;
-        return $db->queryAll('SELECT * FROM news','News');
+        $now = date('d-m-Y H:m:s');
+        $sql = 'INSERT INTO ' . static::$table . '(title,text,data,user) VALUES ('
+                                        . "'$title'" . ', ' . "'$text'" . ', ' . "'$now'" . ', ' . "'$user'" . ')';
+        return $db->queryAdd($sql);
+
     }
-    public function getOne($id)
-    {
-        $db = new DB;
-        return $db->queryOne('SELECT * FROM news WHERE id=' . $id,'News');
-    }
-} 
+}
