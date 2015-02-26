@@ -8,7 +8,7 @@ class NewsController
         $items = News::getAll();
         $view = new View($items);
         $file_n = __DIR__ . '/../views/news/all.php';
-        $view->display($file_n);
+        $view->display($file_n,$items);
 
     }
 
