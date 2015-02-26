@@ -16,11 +16,9 @@ class NewsController
     {
         $id = isset($_GET['id'])?($_GET['id']):(null);
         $item = News::getOne($id);
-        var_dump($item); echo '<br>';
         $view = new View($item);
         $file_n = __DIR__ . '/../views/news/one.php';
-        var_dump($view);
-        $view->display($file_n);
+        $view->display($file_n,$item);
 
     }
 

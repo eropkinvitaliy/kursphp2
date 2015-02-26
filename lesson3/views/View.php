@@ -10,9 +10,10 @@ class View
         $this->items = $dataItems;
     }
 
-    public function display($filename)
+    public function display($filename,$item)
     {
         if (file_exists($filename)) {
+            $this->items = $item;
             include $filename;
         } else {
             die('Файл не найден');
