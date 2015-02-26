@@ -6,13 +6,23 @@ class NewsController
     public function actionAll()
     {
         $items = News::getAll();
-        include __DIR__ . '/../views/news/all.php';
+        $view = new View($items);
+        $file_n = __DIR__ . '/../views/news/all.php';
+        $view->display($file_n);
+
     }
+
     public function actionOne()
     {
-        $id = $_GET['id'];
+        $id = isset($_GET['id'])?($_GET['id']):(null);
         $item = News::getOne($id);
-        include __DIR__ . '/../views/news/one.php';
+        var_dump($item); echo '<br>';
+        $view = new View($item);
+        $file_n = __DIR__ . '/../views/news/one.php';
+
+        var_dump($view); die;
+        $view->display($file_n);
+
     }
 
 } 
