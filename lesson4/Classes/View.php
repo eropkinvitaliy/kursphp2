@@ -2,13 +2,13 @@
 
 
 class View
-    implements IteratorAggregate
+   // implements IteratorAggregate
 {
-    protected $position = 0;
+//    protected $position = 0;
     protected $data = [];
     protected $itm = [];
 
-    public function getIterator()
+ /*   public function getIterator()
     {
         return new MyIterator($this->data);
     }
@@ -17,27 +17,15 @@ class View
     {
         $this->data[$this->position++] = $value;
     }
-
+*/
     public function __set($k, $v)
     {
         $this->data[$k] = $v;
     }
 
-    public function display($template, $object)
+    public function display($template, $tempdata)
     {
-        foreach ($object as $key => $val) {
-            foreach ($val as $k1 => $v1) {
-                foreach ($v1 as $k3 => $temp) {
-                    $ttt = [];
-                    $ttt[$k3] = $temp;
-                    array_push($this->itm, $ttt);
-                }
-            }
-        }
-
-        /*foreach ($this->data as $key => $val) {
-            $$key = $val;
-        }*/
+        $this->data = $tempdata;
         if (file_exists($template)) {
             include $template;
         } else {
@@ -45,5 +33,4 @@ class View
         }
 
     }
-
 }

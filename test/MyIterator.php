@@ -1,4 +1,4 @@
-<?php
+<?php/*
 class MyIterator implements Iterator
 {
     private $var = [];
@@ -41,3 +41,5 @@ class MyIterator implements Iterator
     }
 
 }
+*/
+?>
