@@ -6,11 +6,9 @@ class NewsController
     {
         $news = News::getAll();
         $view = new View();
-        //$view->items = $news;
         $iter = new RecursiveArrayIterator($news);
         $data = [];
         foreach (new RecursiveIteratorIterator($iter) as $key => $value) {
-            // echo $key . ": " . $value . "<br>";
             $ttt = [];
             $ttt[$key] = $value;
             array_push($data, $ttt);
