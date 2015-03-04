@@ -22,9 +22,6 @@ class NewsController
         $view->item = $new;
         $file_n = __DIR__ . '/../views/news/one.php';
         $view->display($file_n);
-        ?>
-        <pre><?php var_dump(NewsModel::findOneByPk(36)) ?></pre><?php
-        die;
     }
 
 }

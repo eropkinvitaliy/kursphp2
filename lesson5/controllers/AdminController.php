@@ -9,7 +9,7 @@ class AdminController
         $article->title = $_POST['title'];
         $article->text = $_POST['text'];
         $now = date('d-m-Y H:m:s');
-        $article->data = $now;
+        $article->date = $now;
         $article->user = $_POST['user'];
         $article->insert();
         //$item = NewsModel::addOne($title,$text,$user);
