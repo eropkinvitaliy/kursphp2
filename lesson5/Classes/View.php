@@ -10,13 +10,10 @@ class View
         $this->data[$k] = $v;
     }
 
-    public function display($template, $tempdata)
+    public function display($template)
     {
-        $this->data = $tempdata;
-        ?><pre><?php var_dump($this->data) ?></pre><?php;
-        foreach ($this->data as $item)
-        {
-            ?><pre><?php var_dump($item) ?></pre><?php;
+        foreach ($this->data as $key => $val) {
+            $$key = $val;
         }
         if (file_exists($template)) {
             include $template;
