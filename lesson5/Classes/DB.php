@@ -19,6 +19,7 @@ class DB
     {
         $sth = $this->dbh->prepare($sql);
         $sth->execute($params);
+        $this->className;
         return $sth->fetchAll(PDO::FETCH_CLASS, $this->className);
     }
 
