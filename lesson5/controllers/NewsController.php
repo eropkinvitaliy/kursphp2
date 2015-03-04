@@ -4,13 +4,9 @@ class NewsController
 {
     public function actionAll()
     {
-        $db = new DB;
-        $res = $db->query('SELECT * FROM news');
-        ?><pre><?php var_dump($res)?></pre><?php
+
+        ?><pre><?php var_dump(NewsModel::findAll())?></pre><?php
         die;
-
-
-
         /*
         $db = new DB;
         $res = $db->query('SELECT * FROM news');
