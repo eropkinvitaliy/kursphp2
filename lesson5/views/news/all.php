@@ -1,4 +1,4 @@
-<p><a href="../lesson3/index.php?ctrl=Admin&act=Add" style="color: #ff0000">
+<p><a href="../lesson5/index.php?ctrl=Admin&act=Add" style="color: #ff0000">
         Добавить новость</a></p>
 <?php
 foreach ($this->data as $id => $item): ?>

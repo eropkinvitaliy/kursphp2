@@ -3,11 +3,11 @@
 class NewsModel
     extends AbstractModel
 {
-    public $id;
+    /*public $id;
     public $title;
     public $text;
     public $data;
-    public $user;
+    public $user;*/
 
     static protected $table = 'news';
 
