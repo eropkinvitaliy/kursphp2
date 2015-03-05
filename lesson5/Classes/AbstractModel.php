@@ -6,10 +6,10 @@ abstract class AbstractModel
 
     protected $data = [];
 
-   /* public function __set($k, $v)
+    public function __set($k, $v)
     {
         $this->data[$k] = $v;
-    }*/
+    }
 
     public function __get($k)
     {
@@ -32,7 +32,19 @@ abstract class AbstractModel
         $sql = 'SELECT * FROM ' . static::$table . ' WHERE id=:id';
         $db = new DB();
         $db->setClassName($class);
+        var_dump([':id' => $id]);
         return $db->query($sql, [':id' => $id])[0];
+    }
+
+    public static function findByColumn($column, $value)
+    {
+        $class = get_called_class();
+        echo $sql = 'SELECT * FROM ' . static::$table .
+            ' WHERE ' . $column . '=:'. $value;
+        $db = new DB();
+        $db->setClassName($class);
+        var_dump([':'.$column => $value]);
+        return $db->query($sql, [':'.$column => $value]);
     }
 
     public function insert()
@@ -44,7 +56,6 @@ abstract class AbstractModel
             $ins[] = ':' . $col;
             $data[':' . $col] = $this->data[$col];
         }
-
         $sql = 'INSERT INTO ' .static::$table.
             ' (' . implode(', ', $cols). ')
             VALUES

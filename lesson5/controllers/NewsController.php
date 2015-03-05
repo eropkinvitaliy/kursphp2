@@ -4,6 +4,9 @@ class NewsController
 {
     public function actionAll()
     {
+        var_dump(NewsModel::findOneByPk(37));
+        var_dump(NewsModel::findByColumn('id',37)); die;
+
         $news = NewsModel::findAll();
         $view = new View();
         $view->items = $news;
