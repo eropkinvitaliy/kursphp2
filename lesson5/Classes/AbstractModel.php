@@ -5,6 +5,7 @@ abstract class AbstractModel
     static protected $table;
 
     protected $data = [];
+    public $id;
 
     public function __set($k, $v)
     {
@@ -64,10 +65,10 @@ abstract class AbstractModel
         echo $this->data['id'] = $db->executeInsert($sql, $data);
     }
 
-    public static function delete()
+    public function delete()
     {
-        $sql = 'DELETE * FROM ' . static::$table . ' WHERE id=:id';
         $db = new DB();
-        return $db->query($sql, [':id' => $this->id]);
+        $sql = 'DELETE * FROM ' . static::$table . ' WHERE id=:id';
+        return $db->execute($sql, [':id' => $this->id]);
     }
 } 
