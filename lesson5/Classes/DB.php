@@ -28,4 +28,11 @@ class DB
         $sth = $this->dbh->prepare($sql);
         return $sth->execute($params);
     }
+
+    public function executeInsert($sql, $params = [])
+    {
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute($params);
+        return $this->dbh->lastInsertId();
+    }
 }

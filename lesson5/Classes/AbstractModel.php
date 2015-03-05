@@ -61,6 +61,6 @@ abstract class AbstractModel
             (' . implode(', ', $ins). ')
             ';
         $db = new DB;
-        $db->execute($sql, $data);
+        echo $this->data['id'] = $db->executeInsert($sql, $data);
     }
 } 
