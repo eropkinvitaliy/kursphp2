@@ -63,4 +63,11 @@ abstract class AbstractModel
         $db = new DB;
         echo $this->data['id'] = $db->executeInsert($sql, $data);
     }
+
+    public static function delete($id)
+    {
+        $sql = 'DELETE * FROM ' . static::$table . ' WHERE id=:id';
+        $db = new DB();
+        return $db->query($sql, [':id' => $id]);
+    }
 } 
