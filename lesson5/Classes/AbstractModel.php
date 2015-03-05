@@ -32,19 +32,18 @@ abstract class AbstractModel
         $sql = 'SELECT * FROM ' . static::$table . ' WHERE id=:id';
         $db = new DB();
         $db->setClassName($class);
-        var_dump([':id' => $id]);
         return $db->query($sql, [':id' => $id])[0];
     }
 
     public static function findByColumn($column, $value)
     {
         $class = get_called_class();
-        echo $sql = 'SELECT * FROM ' . static::$table .
-            ' WHERE ' . $column . '=:'. $value;
+        $sql = 'SELECT * FROM ' . static::$table .
+            ' WHERE ' . $column . '=:' . $column;
         $db = new DB();
         $db->setClassName($class);
-        var_dump([':'.$column => $value]);
-        return $db->query($sql, [':'.$column => $value]);
+        $column = ':' . $column;
+        return $db->query($sql,[$column => $value]);
     }
 
     public function insert()
