@@ -17,7 +17,7 @@ class AdminController
     public function actionDell()
     {
         $article = new NewsModel();
-        $id = '37'; //будет приходить через $_GET
-        $article->delete($id);
+        $this->$id = '37'; //будет приходить через $_GET
+        $article->delete();
     }
 } 
