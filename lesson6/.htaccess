@@ -1,0 +1,5 @@
+AddDefaultCharset utf-8
+
+RewriteEngine On
+RewriteRule ^([a-zA-Z]+)\/([a-zA-Z]+)$ /php-2/lesson6/index.php?ctrl=$1&act=$2 [QSA]
+RewriteRule ^([a-zA-Z0-9]+)\/([a-zA-Z0-9]+)\/([a-zA-Z0-9]+)$ /php-2/lesson6/index.php?ctrl=$1&act=$2&id=$3 [QSA]
