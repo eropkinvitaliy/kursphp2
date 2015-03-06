@@ -2,7 +2,7 @@
 
 interface Imodel
 {
-    public static function getAll();
-    public static function getOne();
+    public static function findAll();
+    public static function findOneByPk($id);
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 abstract class AbstractModel
+
 {
     static protected $table;
     protected $data = [];
@@ -51,7 +52,7 @@ abstract class AbstractModel
         }
     }
 
-    protected  function insert()
+    protected function insert()
     {
         $cols = array_keys($this->data);
         $ins = [];
@@ -77,7 +78,7 @@ abstract class AbstractModel
         return $db->execute($sql, [':id' => $this->id]);
     }
 
-    protected  function update()
+    protected function update()
     {
         $cols = [];
         $data = [];
@@ -97,10 +98,9 @@ abstract class AbstractModel
 
     public function save()
     {
-        if (!isset($this->id)) {
+        if (!isset($this->data['id'])) {
             $this->insert();
-        }
-        else {
+        } else {
             $this->update();
         }
     }

@@ -5,13 +5,13 @@ class AdminController
 
     public function actionAdd()
     {
-        $article = new NewsModel();
-        $article->title = $_POST['title'];
-        $article->text = $_POST['text'];
+        $new = new NewsModel();
+        $new->title = $_POST['title'];
+        $new->text = $_POST['text'];
         $now = date('d-m-Y H:m:s');
-        $article->date = $now;
-        $article->user = $_POST['user'];
-        $article->save();
+        $new->date = $now;
+        $new->user = $_POST['user'];
+        $new->save();
         include __DIR__ . '/../views/news/add.php';
     }
 
@@ -25,11 +25,21 @@ class AdminController
 
     public function actionUpdate()
     {
-        $new = new NewsModel();
-        $new->id =$_GET['id'];
-        $new = NewsModel::findOneByPk($new->id);
-        include __DIR__ . '/../views/news/add.php';
-        $new->save();
-
+        session_start();
+        $id = $_GET['id'];
+        if (!isset($id)) {
+           echo $id;
+            $id = $_SESSION['id'];
+        }
+        else {
+            $_SESSION['id'] = $id;
+        }
+        $new = NewsModel::findOneByPk($id);
+        include __DIR__ . '/../views/news/update.php';
+        $view = new NewsModel();
+        $view->title = isset($_POST['title']) ? $_POST['title'] : null;
+        $view->text = isset($_POST['text']) ? $_POST['text'] : null;
+        $view->id = $id;
+        $view->save();
     }
 } 
