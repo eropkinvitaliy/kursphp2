@@ -51,7 +51,7 @@ abstract class AbstractModel
         }
     }
 
-    public function insert()
+    protected  function insert()
     {
         $cols = array_keys($this->data);
         $ins = [];
@@ -73,11 +73,11 @@ abstract class AbstractModel
     public function delete()
     {
         $db = new DB();
-        $sql = 'DELETE * FROM ' . static::$table . ' WHERE id=:id';
+        $sql = 'DELETE FROM ' . static::$table . ' WHERE id=:id';
         return $db->execute($sql, [':id' => $this->id]);
     }
 
-    public function update()
+    protected  function update()
     {
         $cols = [];
         $data = [];

@@ -11,20 +11,25 @@ class AdminController
         $now = date('d-m-Y H:m:s');
         $article->date = $now;
         $article->user = $_POST['user'];
-        if (isset($article->title) && isset($article->text) && isset($article->user))
-        {
-            $article->insert();
-            include __DIR__ . '/../views/news/addtext.php';
-        }
-        else {
-            die ('Не заполнены поля');
-        }
-
+        $article->save();
+        include __DIR__ . '/../views/news/add.php';
     }
-    public function actionDell()
+
+    public function actionDel()
     {
-        $article = new NewsModel();
-        $this->$id = '37';
-        $article->delete();
+        $news = new NewsModel();
+        $news->id = $_GET['id'];
+        $news->delete();
+        include __DIR__ . '/../views/news/del.php';
+    }
+
+    public function actionUpdate()
+    {
+        $new = new NewsModel();
+        $new->id =$_GET['id'];
+        $new = NewsModel::findOneByPk($new->id);
+        include __DIR__ . '/../views/news/add.php';
+        $new->save();
+
     }
 } 
