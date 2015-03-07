@@ -13,7 +13,7 @@
 $err = $_SESSION['err'];
 //var_dump($err);
 echo 'Статья не найдена.<br>';
-echo 'Ошибка произошла при выполнении <b>метода </b> ' . $_SESSION['errFile'].' в ';
+echo 'Ошибка произошла при выполнении <b> метода </b> ' . $_SESSION['errFile'].' в ';
 echo $_SESSION['errLine'].' строке.';
 echo ' Код ошибки : ' . $_SESSION['errCode'];
 

@@ -12,11 +12,11 @@ $method = 'action' . $act;
 try {
     $controller->$method();
 } catch (E404Ecxeption $err) {
+    $_SESSION['err'] = $err;
     $_SESSION['errFile'] = $err->getFile();
     $_SESSION['errLine'] = $err->getLine();
     $_SESSION['errCode'] = $err->getCode();
-
-    header('HTTP/1.0 404 Not Found');
-    header('Location: ./views/errors/e404.php');
+    $_SESSION['errMess'] = $err->getMessage();
+    header('Location: ./index.php?ctrl=Admin&act=LogicErr');
 }
 

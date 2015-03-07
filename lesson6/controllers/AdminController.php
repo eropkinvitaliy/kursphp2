@@ -39,10 +39,20 @@ class AdminController
         if (empty($view->title)) {    //если заголовка пока нет, ищем по id новость и выводим на экран форму редактора
             $view = NewsModel::findOneByPk($id);
             include __DIR__ . '/../views/news/update.php';
-        }
-        else { //заголовок новости пришёл из формы редактора и мы обновляем новость и переходим к Фронтконтроллеру
+        } else { //заголовок новости пришёл из формы редактора и мы обновляем новость и переходим к Фронтконтроллеру
             $view->save();
             header('Location: http://localhost/php-2/lesson6/index.php');
         }
+    }
+
+    public function actionLogicErr()
+    {
+        session_start();
+        $date = date('d-m-Y H:m:s');
+        $filename = __DIR__ . '\log.txt';
+        LogicError::recordErr($filename, $date, $_SESSION['errFile'],
+            $_SESSION['errLine'], $_SESSION['errCode'], $_SESSION['errMess']);
+        header('HTTP/1.0 404 Not Found');
+        header('Location: ./views/errors/e404.php');
     }
 } 
