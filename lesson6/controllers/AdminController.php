@@ -55,4 +55,12 @@ class AdminController
         header('HTTP/1.0 404 Not Found');
         header('Location: ./views/errors/e404.php');
     }
+    public function actionFileLogicErr()
+    {
+        $filename = __DIR__ . '\log.txt';
+        $data = LogicError::viewErr($filename);
+        $view = new View();
+        $view->item = $data;
+        $view->display($filename);
+    }
 } 

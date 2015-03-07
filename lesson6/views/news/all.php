@@ -18,6 +18,8 @@ foreach ($items as $item): ?>
             <?php echo $item->title; ?></a></p>
     <div><?php echo $item->text; ?></div>
     <div><?php echo 'Добавил новость: ' . $item->user . '  Дата:  ' . $item->date ?></div>
-<?php endforeach; ?>
+<?php endforeach; ?> <br>
+<p><a href="./index.php?ctrl=Admin&act=FileLogicErr" style="color: #fff000">
+        Посмотреть журнал ошибок</a></p>
 </body>
 </html>

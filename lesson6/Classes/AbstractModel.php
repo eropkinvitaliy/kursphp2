@@ -35,6 +35,11 @@ abstract class AbstractModel
         $db = new DB();
         $db->setClassName(get_called_class());
         $sql = 'SELECT * FROM ' . static::$table . ' WHERE id=:id';
+        if (!$res = $db->query($sql, [':id' => $id])[0]) {
+            $err = new E404Ecxeption();
+            throw $err;
+            return false;
+        }
         return $db->query($sql, [':id' => $id])[0];
     }
 
@@ -97,7 +102,11 @@ abstract class AbstractModel
             ' SET ' . implode(', ', $cols) .
             ' WHERE id=:id';
         $db = new DB;
-        $db->execute($sql, $data);
+
+        if (!$db->execute($sql, $data)) {
+            $errSql = new E404Ecxeption();
+            throw $errSql;
+        }
     }
 
     public function save()

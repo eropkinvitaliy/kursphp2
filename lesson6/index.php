@@ -19,4 +19,12 @@ try {
     $_SESSION['errMess'] = $err->getMessage();
     header('Location: ./index.php?ctrl=Admin&act=LogicErr');
 }
+catch (E404Ecxeption $errSql) {
+    $_SESSION['err'] = $errSql;
+    $_SESSION['errFile'] = $errSql->getFile();
+    $_SESSION['errLine'] = $errSql->getLine();
+    $_SESSION['errCode'] = $errSql->getCode();
+    $_SESSION['errMess'] = $errSql->getMessage();
+    header('Location: ./index.php?ctrl=Admin&act=LogicErr');
+}
 
