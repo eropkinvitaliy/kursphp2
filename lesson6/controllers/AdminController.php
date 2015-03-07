@@ -42,7 +42,7 @@ class AdminController
         }
         else {
             $view->save();
-            header('Location: ' .  __DIR__ . '/index.php');
+            header('Location: http://localhost/php-2/lesson6/index.php');
         }
     }
 } 
