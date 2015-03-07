@@ -42,7 +42,7 @@ class AdminController
         }
         else {
             $view->save();
-            header('Location: ./index.php');
+            header('Location: ' .  __DIR__ . '/index.php');
         }
     }
 } 
