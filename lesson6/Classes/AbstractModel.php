@@ -38,17 +38,20 @@ abstract class AbstractModel
         return $db->query($sql, [':id' => $id])[0];
     }
 
-    public static function findOneByColumn($column, $value)
+    public static function findByColumn($column, $value)
     {
         $db = new DB();
         $db->setClassName(get_called_class());
         $sql = 'SELECT * FROM ' . static::$table .
             ' WHERE ' . $column . '=:value';
         $res = $db->query($sql, [':value' => $value]);
-        if (!empty($res)) {
-            return $res[0];
-        } else {
+        if (empty($res)) {
+            $err = new E404Ecxeption();
+            throw $err;
             return false;
+        }
+        else {
+            return $res[0];
         }
     }
 

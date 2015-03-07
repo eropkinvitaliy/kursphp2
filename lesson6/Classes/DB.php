@@ -7,7 +7,12 @@ class DB
 
     public function __construct()
     {
-        $this->dbh = new PDO('mysql:dbname=mynews;host=localhost', 'root', '');
+        // Здесь потенциально опасный код
+        if (!$this->dbh = new PDO('mysql:dbname=mynews;host=localhost', 'root', '')) {
+            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $edb = new PDOException();
+            throw $edb;
+        }
     }
 
     public function setClassName($className)
