@@ -8,8 +8,8 @@
 <h3>Добавление новостей</h3>
 
 <form action="./index.php?ctrl=Admin&act=Update" method="POST">
-    Заголовок новости: <input type="text" Size=70 name="title" required="" value="<?php echo $new->title ?>" ><br>
-    Текст <textarea name="text" cols=60 rows=6 required=""><?php echo $new->text ?> </textarea>
+    Заголовок новости: <input type="text" Size=70 name="title" required="" value="<?php echo $view->title ?>" ><br>
+    Текст <textarea name="text" cols=60 rows=6 required=""><?php echo $view->text ?> </textarea>
      <br><br>
     <input type="Submit" Value="Ok">
     <input type="reset" Value=" Очистить ">

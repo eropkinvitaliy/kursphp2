@@ -28,18 +28,21 @@ class AdminController
         session_start();
         $id = $_GET['id'];
         if (!isset($id)) {
-           echo $id;
             $id = $_SESSION['id'];
-        }
-        else {
+        } else {
             $_SESSION['id'] = $id;
         }
-        $new = NewsModel::findOneByPk($id);
-        include __DIR__ . '/../views/news/update.php';
         $view = new NewsModel();
         $view->title = isset($_POST['title']) ? $_POST['title'] : null;
         $view->text = isset($_POST['text']) ? $_POST['text'] : null;
         $view->id = $id;
-        $view->save();
+        if (empty($view->title)) {
+            $view = NewsModel::findOneByPk($id);
+            include __DIR__ . '/../views/news/update.php';
+        }
+        else {
+            $view->save();
+            header('Location: ./index.php');
+        }
     }
 } 
