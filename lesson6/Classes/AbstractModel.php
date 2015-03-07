@@ -40,6 +40,7 @@ abstract class AbstractModel
 
     public static function findByColumn($column, $value)
     {
+        session_start();
         $db = new DB();
         $db->setClassName(get_called_class());
         $sql = 'SELECT * FROM ' . static::$table .

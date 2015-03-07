@@ -8,10 +8,15 @@ class DB
     public function __construct()
     {
         // Здесь потенциально опасный код
-        if (!$this->dbh = new PDO('mysql:dbname=mynews;host=localhost', 'root', '')) {
-            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $edb = new PDOException();
-            throw $edb;
+        try {
+            if (!$this->dbh = new PDO('mysql:dbname=mynews;host=localhost', 'root', '')) {
+                $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $edb = new PDOException();
+                throw $edb;
+            }
+        } catch (PDOException $edb) {
+            header('HTTP/1.0 403 Forbidden');
+            header('Location: ./views/errors/e403.php');
         }
     }
 

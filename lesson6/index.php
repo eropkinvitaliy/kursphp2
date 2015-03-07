@@ -8,12 +8,13 @@ $act = isset($_GET['act']) ? $_GET['act'] : 'All';
 $controllerClassName = $ctrl . 'Controller';
 
 $controller = new $controllerClassName;
-$method = 'action' .$act;
+$method = 'action' . $act;
 try {
     $controller->$method();
-} catch(PDOException $edb)
-{
-  $_SESSION['edb'] = $edb;
-  header('Location: ./views/errors/e403.php');
+} catch (E404Ecxeption $err) {
+    $_SESSION['err'] = $err;
+
+    header('HTTP/1.0 404 Not Found');
+    header('Location: ./views/errors/e404.php');
 }
 

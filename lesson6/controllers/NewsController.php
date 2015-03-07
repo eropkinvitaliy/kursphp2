@@ -23,13 +23,10 @@ class NewsController
 
     public function actionFindByColumn()
     {
+        session_start();
         $column = 'title';
         $value = $_POST['value'];
-        try {
-            $new = NewsModel::findByColumn($column, $value);
-        } catch (E404Ecxeption $err) {
-            die ('Новость не найдена');
-        }
+        $new = NewsModel::findByColumn($column, $value);
         $view = new View();
         $view->item = $new;
         $file_n = __DIR__ . '/../views/news/one.php';
