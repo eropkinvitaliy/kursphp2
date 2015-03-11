@@ -2,6 +2,8 @@
 
 namespace Application\Classes;
 
+use ErrorException;
+
 class LogicError extends ErrorException
 {
     public static function recordErr($filename, $date, $file, $line, $code, $mess)

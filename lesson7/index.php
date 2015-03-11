@@ -1,4 +1,9 @@
 <?php
+
+use Application\Controllers\News;
+use Application\Controllers\Admin;
+use Application\Classes\E404Exception;
+
 session_start();
 require_once __DIR__ . '/autoload.php';
 
@@ -9,10 +14,9 @@ $ctrl = !empty($pathParts[3]) ? ucfirst($pathParts[3]) : 'News';
 $act = !empty($pathParts[4]) ? ucfirst($pathParts[4]) : 'All';
 
 $controllerClassName = 'Application\\Controllers\\' . $ctrl;
-
-$controller = new $controllerClassName;
-$method = 'action' . $act;
 try {
+    $controller = new $controllerClassName;
+    $method = 'action' . $act;
     $controller->$method();
 } catch (E404Ecxeption $err) {
     $_SESSION['err'] = $err;
@@ -21,8 +25,7 @@ try {
     $_SESSION['errCode'] = $err->getCode();
     $_SESSION['errMess'] = $err->getMessage();
     header('Location: ./Admin/LogicErr');
-}
-catch (E404Ecxeption $errSql) {
+} catch (E404Ecxeption $errSql) {
     $_SESSION['err'] = $errSql;
     $_SESSION['errFile'] = $errSql->getFile();
     $_SESSION['errLine'] = $errSql->getLine();

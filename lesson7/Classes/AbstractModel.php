@@ -87,7 +87,7 @@ abstract class AbstractModel
 
     public function delete()
     {
-        $db = new \DB();
+        $db = new DB();
         $sql = 'DELETE FROM ' . static::$table . ' WHERE id=:id';
         return $db->execute($sql, [':id' => $this->id]);
     }
@@ -106,7 +106,7 @@ abstract class AbstractModel
         $sql = 'UPDATE ' . static::$table .
             ' SET ' . implode(', ', $cols) .
             ' WHERE id=:id';
-        $db = new \DB;
+        $db = new DB;
 
         if (!$db->execute($sql, $data)) {
             $errSql = new \E404Ecxeption();

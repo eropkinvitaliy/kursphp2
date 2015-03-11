@@ -2,6 +2,9 @@
 
 namespace Application\Controllers;
 
+use Application\Classes\View;
+use Application\Classes\LogicError;
+use Application\Classes\E404Ecxeption;
 use Application\Models\News as NewsModel;
 
 class Admin
@@ -36,16 +39,19 @@ class Admin
         } else {
             $_SESSION['id'] = $id; //записываем id в сессию, что бы после апдейта сохранить эту новость
         }
-        $view = new NewsModel();
-        $view->title = isset($_POST['title']) ? $_POST['title'] : null;
-        $view->text = isset($_POST['text']) ? $_POST['text'] : null;
-        $view->id = $id;
-        if (empty($view->title)) {    //если заголовка пока нет, ищем по id новость и выводим на экран форму редактора
-            $view = NewsModel::findOneByPk($id);
-            include __DIR__ . '/../views/news/update.php';
+        $new = new NewsModel();
+        $new->title = isset($_POST['title']) ? $_POST['title'] : null;
+        $new->text = isset($_POST['text']) ? $_POST['text'] : null;
+        $new->id = $id;
+        if (empty($new->title)) {    //если заголовка пока нет, ищем по id новость и выводим на экран форму редактора
+            $new = NewsModel::findOneByPk($id);
+            $view = new View();
+            $view->item = $new;
+            $filename = __DIR__ . '/../views/news/update.php';
+            $view->display($filename);
         } else { //заголовок новости пришёл из формы редактора и мы обновляем новость и переходим к Фронтконтроллеру
-            $view->save();
-            header('Location: http://localhost/php-2/lesson6/index.php');
+            $new->save();
+            header('Location: http://localhost/php-2/lesson7/');
         }
     }
 
