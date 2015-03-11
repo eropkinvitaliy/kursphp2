@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteBase /PHP-2/lesson7/
+RewriteRule ^(.*)$ index.php
