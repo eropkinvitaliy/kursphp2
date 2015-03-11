@@ -2,13 +2,13 @@
 session_start();
 require_once __DIR__ . '/autoload.php';
 
-echo $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$pathParts = explode('//', $path);
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$pathParts = explode('/', $path);
 
-$ctrl = !empty($pathParts[4]) ? ucfirst($pathParts[4]) : 'News';
-$act = !empty($pathParts[5]) ? ucfirst($pathParts[5]) : 'All';
+$ctrl = !empty($pathParts[3]) ? ucfirst($pathParts[3]) : 'News';
+$act = !empty($pathParts[4]) ? ucfirst($pathParts[4]) : 'All';
 
-$controllerClassName = $ctrl . 'Controller';
+$controllerClassName = 'Application\\Controllers\\' . $ctrl;
 
 $controller = new $controllerClassName;
 $method = 'action' . $act;
@@ -20,7 +20,7 @@ try {
     $_SESSION['errLine'] = $err->getLine();
     $_SESSION['errCode'] = $err->getCode();
     $_SESSION['errMess'] = $err->getMessage();
-    header('Location: ./index.php?ctrl=Admin&act=LogicErr');
+    header('Location: ./Admin/LogicErr');
 }
 catch (E404Ecxeption $errSql) {
     $_SESSION['err'] = $errSql;
@@ -28,6 +28,6 @@ catch (E404Ecxeption $errSql) {
     $_SESSION['errLine'] = $errSql->getLine();
     $_SESSION['errCode'] = $errSql->getCode();
     $_SESSION['errMess'] = $errSql->getMessage();
-    header('Location: ./index.php?ctrl=Admin&act=LogicErr');
+    header('Location: ./Admin/LogicErr');
 }
 

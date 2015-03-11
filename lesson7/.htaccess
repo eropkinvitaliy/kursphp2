@@ -1,3 +1,8 @@
 RewriteEngine On
 RewriteBase /PHP-2/lesson7/
-RewriteRule ^(.*)$ index.php
+RewriteRule ^$ index.php [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^(.*)$ index.php [QSA]

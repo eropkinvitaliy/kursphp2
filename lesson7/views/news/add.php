@@ -17,7 +17,7 @@
     <input type="reset" Value=" Очистить ">
 </form>
 <div>
-    <br> <p><a href="./index.php">Вернуться к списку новостей</a></p>
+    <br> <p><a href="../">Вернуться к списку новостей</a></p>
 </div>
 </body>
 </html>

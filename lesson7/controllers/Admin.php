@@ -1,6 +1,10 @@
 <?php
 
-class AdminController
+namespace Application\Controllers;
+
+use Application\Models\News as NewsModel;
+
+class Admin
 {
 
     public function actionAdd()

@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Classes;
+
+use Application\Classes\DB;
+use Application\Classes\E404Ecxeption;
+
 abstract class AbstractModel
 
 {
@@ -36,7 +41,7 @@ abstract class AbstractModel
         $db->setClassName(get_called_class());
         $sql = 'SELECT * FROM ' . static::$table . ' WHERE id=:id';
         if (!$res = $db->query($sql, [':id' => $id])[0]) {
-            $err = new E404Ecxeption();
+            $err = new \E404Ecxeption();
             throw $err;
             return false;
         }
@@ -52,7 +57,7 @@ abstract class AbstractModel
             ' WHERE ' . $column . '=:value';
         $res = $db->query($sql, [':value' => $value]);
         if (empty($res)) {
-            $err = new E404Ecxeption();
+            $err = new \E404Ecxeption();
             throw $err;
             return false;
         }
@@ -82,7 +87,7 @@ abstract class AbstractModel
 
     public function delete()
     {
-        $db = new DB();
+        $db = new \DB();
         $sql = 'DELETE FROM ' . static::$table . ' WHERE id=:id';
         return $db->execute($sql, [':id' => $this->id]);
     }
@@ -101,10 +106,10 @@ abstract class AbstractModel
         $sql = 'UPDATE ' . static::$table .
             ' SET ' . implode(', ', $cols) .
             ' WHERE id=:id';
-        $db = new DB;
+        $db = new \DB;
 
         if (!$db->execute($sql, $data)) {
-            $errSql = new E404Ecxeption();
+            $errSql = new \E404Ecxeption();
             throw $errSql;
         }
     }

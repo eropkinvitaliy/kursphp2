@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Classes;
+
+use Application\Classes\E404Ecxeption;
+
 class DB
 {
     private $dbh;
@@ -9,9 +13,9 @@ class DB
     {
         // Здесь потенциально опасный код
         try {
-            if (!$this->dbh = new PDO('mysql:dbname=mynews;host=localhost', 'root', '')) {
+            if (!$this->dbh = new \PDO('mysql:dbname=mynews;host=localhost', 'root', '')) {
                 $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $edb = new PDOException();
+                $edb = new \PDOException();
                 throw $edb;
             }
         } catch (PDOException $edb) {
@@ -35,7 +39,7 @@ class DB
         $sth = $this->dbh->prepare($sql);
         $sth->execute($params);
         $this->className;
-        return $sth->fetchAll(PDO::FETCH_CLASS, $this->className);
+        return $sth->fetchAll(\PDO::FETCH_CLASS, $this->className);
     }
 
     public function execute($sql, $params = [])
