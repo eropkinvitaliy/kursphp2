@@ -36,8 +36,10 @@ class News
         }
         $mailer->ClearAddresses();
         $mailer->ClearAttachments();
-        echo '<br>' . $tomorrow = Carbon::now()->addDay() . '<br>';
-        echo $lastWeek = Carbon::now()->subWeek();
+        echo '<br> Завтра ' .
+        $tomorrow = Carbon::now()->addDay() . '<br>';
+        echo 'Неделю назад :' . $lastWeek = Carbon::now()->subWeek();echo '<br>';
+        echo 'Мне ' . $howOldAmI = Carbon::createFromDate(1970, 4, 18)->age . 'год(а)';
 
 
     }
