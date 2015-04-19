@@ -2,11 +2,10 @@
 
 namespace App\Modules\News\Models;
 
-
-use T4\Mvc\Module;
+use T4\Orm\Model;
 
 class Archive
-    extends Module
+    extends Model
 {
 
 } 

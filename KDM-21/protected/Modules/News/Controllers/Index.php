@@ -13,6 +13,11 @@ class Index
 
     const DEFAULT_STORIES_COUNT = 20;
 
+    public function actionArchive()
+    {
+
+    }
+
     public function actionDefault($count=self::DEFAULT_STORIES_COUNT)
     {
         $this->data->topics = Topic::findAllTree();
@@ -68,8 +73,5 @@ class Index
         $this->view->meta->title = $this->data->topic->title;
     }
 
-    public function actionArchive()
-    {
 
-    }
 }
