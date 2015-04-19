@@ -1,0 +1,20 @@
+{% extends 'Kdm/Inner.html' %}
+
+{% block content %}
+
+<ol class="breadcrumb">
+    <li><a href="/">Главная страница</a></li>
+    <li class="active">Новости</li>
+    <li></li>
+</ol>
+
+
+<section class="panel panel-default">
+    <div class="panel-body">
+        <h1><a href="/news/archive">Архив новостей</a></h1>
+
+        <p class="pull-right"><a href="/news/topics/{{topic.Pk}}.html">
+                              <i class="glyphicon glyphicon-chevron-right"></i>см. другие ленты новостей</a></p>
+    </div>
+</section>
+{% endblock %}
