@@ -13,31 +13,24 @@ class Index
 
     const DEFAULT_STORIES_COUNT = 20;
 
+   public function actionArchives()
+   {
+
+   }
+
     public function actionArchive($year)
     {
+        $this->data->year = $year;
+        $this->data->topics = Topic::findAllTree();
         $this->data->items = Story::findAll(
             [
                 'order' => 'published DESC',
                 'where' => 'YEAR(published) = ' . $year,
             ]
         );
-        var_dump($this->data->items);
-        die;
     }
 
-    public function actionDefault($year)       // routes.php настроить под actionArchive не смог
-    {                                          // поэтому испытываю в actionDefault
-        $this->data->items = Story::findAll(
-            [
-                'order' => 'published DESC',
-                'where' => 'YEAR(published) = ' . $year,
-            ]
-        );
-        var_dump($this->data->items);
-        die;
-    }
-
- /*   public function actionDefault($count=self::DEFAULT_STORIES_COUNT)
+    public function actionDefault($count = self::DEFAULT_STORIES_COUNT)
     {
         $this->data->topics = Topic::findAllTree();
         $this->data->items = Story::findAll(
@@ -46,13 +39,12 @@ class Index
                 'limit' => $count,
             ]
         );
-    } */
+    }
 
     public function actionStory($id)
     {
         $this->data->item = Story::findByPK($id);
-        if (empty($this->data->item))
-        {
+        if (empty($this->data->item)) {
             throw new E404Exception;
         }
         $this->data->similar = Story::findAllByColumn(
@@ -66,7 +58,7 @@ class Index
         $this->view->meta->title = $this->data->item->title;
     }
 
-    public function actionNewsByTopic($id, $count=self::DEFAULT_STORIES_COUNT, $color='default')
+    public function actionNewsByTopic($id, $count = self::DEFAULT_STORIES_COUNT, $color = 'default')
     {
         $this->data->topic = Topic::findByPK($id);
         if (empty($this->data->topic)) {
@@ -82,7 +74,7 @@ class Index
             $this->data->topic->getPk(),
             [
                 'order' => 'published DESC',
-                'offset' => ($this->data->page-1)*$count,
+                'offset' => ($this->data->page - 1) * $count,
                 'limit' => $count,
             ]
         );

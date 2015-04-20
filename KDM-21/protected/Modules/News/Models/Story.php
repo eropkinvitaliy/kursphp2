@@ -15,49 +15,26 @@ class Story
     static protected $schema = [
         'table' => 'newsstories',
         'columns' => [
-            'title' => ['type'=>'string'],
-            'published' => ['type'=>'datetime'],
-            'lead' => ['type'=>'text'],
-            'image' => ['type'=>'string', 'default'=>''],
-            'text' => ['type'=>'text'],
+            'title' => ['type' => 'string'],
+            'published' => ['type' => 'datetime'],
+            'lead' => ['type' => 'text'],
+            'image' => ['type' => 'string', 'default' => ''],
+            'text' => ['type' => 'text'],
         ],
         'relations' => [
-            'topic' => ['type'=>self::BELONGS_TO, 'model'=>'App\Modules\News\Models\Topic'],
+            'topic' => ['type' => self::BELONGS_TO, 'model' => 'App\Modules\News\Models\Topic'],
             'files' => ['type' => self::HAS_MANY, 'model' => '\App\Modules\News\Models\File'],
         ]
     ];
 
-  static public function findByYear()
-  {
-
-  }
-
-
-   /*static public function getStory ($published_year)
-   {
-       $coll = (time() - (31536000 * 42))/31536000 +2012;
-       $years = [];
-       for ($i=2013; $i <= $coll; $i++){
-           $years[] = $i;
-       }
-       arsort($years);
-       return $years;
-   }*/
-
-
-
-
-    public function getShortLead($maxLength=120)
+    public function getShortLead($maxLength = 120)
     {
-        if ( mb_strlen( $this->lead) > $maxLength)
-        {
-            $sourceStr=strip_tags($this->lead);
-            $words=explode(' ',mb_substr( $sourceStr,0,$maxLength));
+        if (mb_strlen($this->lead) > $maxLength) {
+            $sourceStr = strip_tags($this->lead);
+            $words = explode(' ', mb_substr($sourceStr, 0, $maxLength));
             array_pop($words);
-            return implode(' ',$words);
-        }
-        else
-        {
+            return implode(' ', $words);
+        } else {
             return $this->lead;
         }
     }
