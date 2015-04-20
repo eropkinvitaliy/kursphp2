@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="KDM" default="build" basedir=".">
+
+    <!-- ============================================  -->
+    <!-- Target: vars                                  -->
+    <!-- ============================================  -->
+    <target name="vars">
+        <echo msg="Setting local variables..." />
+        <echo msg="Build branch is ${build.branch}" />
+        <resolvepath propertyName="project.dir" file="${project.basedir}" />
+        <echo msg="Project source dir is: ${project.dir}" />
+        <resolvepath propertyName="t4.dir" file="${project.dir}/t4" />
+        <echo msg="T4 dir is: ${t4.dir}" />
+        <property name="t4.repo" value="https://github.com/pr-of-it/t4.git" />
+        <php returnProperty="build.time" function="date">
+            <param value="Y-m-d-H-i-s" />
+        </php>
+        <resolvepath propertyName="current.dir" file="/home/kdm/deploy/${build.branch}/${build.time}" />
+        <echo msg="Current build dir is: ${current.dir}" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: t4                                    -->
+    <!-- ============================================  -->
+    <target name="t4">
+        <echo msg="Cloning T4 framework..." />
+        <exec command="git clone https://github.com/pr-of-it/t4.git ${t4.dir}" checkreturn="true" returnProperty="exec.return" outputProperty="exec.output" />
+        <if>
+            <not><equals arg1="0" arg2="${exec.return}" /></not>
+            <then>
+                <fail message="${exec.output}" />
+            </then>
+        </if>
+        <echo msg="${exec.output}" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: composer                              -->
+    <!-- ============================================  -->
+    <target name="composer">
+        <echo msg="Install composer depedencies for T4 framework..." />
+        <exec command="composer install" dir="${t4.dir}" checkreturn="true" returnProperty="exec.return" outputProperty="exec.output" />
+        <if>
+            <not><equals arg1="0" arg2="${exec.return}" /></not>
+            <then>
+                <fail message="${exec.output}" />
+            </then>
+        </if>
+        <echo msg="${exec.output}" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: copy                                  -->
+    <!-- ============================================  -->
+    <target name="copy">
+        <mkdir dir="${current.dir}" />
+        <echo msg="Mkdir ${current.dir}" />
+        <copy todir="${current.dir}">
+            <fileset dir="${project.dir}" defaultexcludes="true">
+                <include name="**" />
+            </fileset>
+        </copy>
+        <chmod file="${current.dir}/public" mode="0777" />
+        <chmod file="${current.dir}/protected" mode="0777" />
+        <!-- @todo: Зачем это??? -->
+        <mkdir dir="${current.dir}/protected/Cache" mode="0777" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: configs                               -->
+    <!-- ============================================  -->
+    <target name="configs">
+        <copy file="${current.dir}/build/production/config.php" tofile="${current.dir}/protected/config.php" overwrite="true" />
+        <symlink target="/home/kdm/settings.php" link="${current.dir}/protected/settings.php" overwrite="true" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: migrate                               -->
+    <!-- ============================================  -->
+    <target name="migrate">
+        <echo msg="Migrations import..." />
+        <exec command="php t4.php /migrate/import" dir="${current.dir}/t4/framework" checkreturn="true" returnProperty="exec.return" outputProperty="exec.output" />
+        <if>
+            <not><equals arg1="0" arg2="${exec.return}" /></not>
+            <then>
+                <fail message="${exec.output}" />
+            </then>
+        </if>
+        <echo msg="${exec.output}" />
+        <echo msg="Migrations up..." />
+        <exec command="php t4.php /migrate/up" dir="${current.dir}/t4/framework" checkreturn="true" returnProperty="exec.return" outputProperty="exec.output" />
+        <if>
+            <not><equals arg1="0" arg2="${exec.return}" /></not>
+            <then>
+                <fail message="${exec.output}" />
+            </then>
+        </if>
+        <echo msg="${exec.output}" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: symlinks                              -->
+    <!-- ============================================  -->
+    <target name="symlinks">
+        <symlink target="/home/kdm/files" link="${current.dir}/public/files" overwrite="true" />
+        <symlink target="/home/kdm/file" link="${current.dir}/public/file" overwrite="true" />
+        <symlink target="/home/kdm/public" link="${current.dir}/public/public" overwrite="true" />
+        <symlink target="/home/kdm/images" link="${current.dir}/public/images" overwrite="true" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: switch                                -->
+    <!-- ============================================  -->
+    <target name="switch">
+        <symlink target="${current.dir}" link="/home/kdm/deploy/${build.branch}/current" overwrite="true" />
+    </target>
+
+    <target name="build" depends="vars, t4, composer, copy, configs, migrate, symlinks, switch" />
+
+</project>

@@ -1,0 +1,72 @@
+{% extends 'Kdm/Inner.html' %}
+{% block content %}
+<ol class="breadcrumb">
+    <li><a href="/">Главная страница</a></li>
+    <li><a href="/news/">Новости</a></li>
+    <li class="active"><a href="/news/topics/{{item.topic.Pk}}.html">{{item.topic.title}}</a></li>
+    <li></li>
+</ol>
+
+    {% block meta_extra %}
+        <meta propery="og:type" content="article">
+        <meta property="og:title" content="{{item.title}}">
+        <meta property="og:image" content="{{item.image}}">
+        <meta property="og:url" content="/news/{{item.Pk}}.html">
+        <meta property="og:description" content="{{item.getShortLead(120)}}">
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:creator" content="@kdm44ru" />
+        <meta name="twitter:title" content="{{item.title}}" />
+        <meta name="twitter:description" content="{{item.getShortLead(120)}}" />
+        <meta name="twitter:image:src" content="{{item.image}}" />
+    {% endblock %}
+</head>
+{% if app.user.role.name == 'admin' %}
+<div class="well pull-right" style="margin: 0 0 10px 10px;">
+    <a href="/admin/news/edit/?id={{item.Pk}}"><span class="btn btn-sm btn-default"><i class="glyphicon glyphicon-pencil"></i></span></a>
+    <a href="/admin/news/delete/?id={{item.Pk}}" class="confirmable"><span class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></span></a>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $('a.confirmable').click(function() {
+            return confirm('Вы уверены?');
+        });
+    });
+</script>
+{% endif %}
+
+<div>
+    <span class="label label-info">{{item.published|date('d.m.Y')}}</span>
+</div>
+<h1 style="margin-top: 0">{{item.title}}</h1>
+<div>
+    {%if item.image %}<div class="pull-left" style="margin-right: 10px;"><img src="{{item.image}}" class="img-responsive" style="max-width: 300px;"></div>{% endif %}
+    {{item.lead|raw}}
+    <hr>
+    {{item.text|raw}}
+</div>
+
+<div style="padding-top: 10px;"><div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="big" data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir" data-yashareTheme="counter"></div>
+<br></div>
+
+{% if 0 != item.files.count %}
+<ul class="list-group">
+    <li class="list-group-item active"><h4 class="list-group-item-heading">Приложенные файлы</h4></li>
+    {% for file in item.files %}
+    <li class="list-group-item">
+        <a href="{{file.file}}" target="_blank"><i class="glyphicon glyphicon-file"></i> {{file.file|basename}}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="panel panel-info">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><h4 class="panel-title">Похожие новости:</h4></div>
+    <ul class="list-group">
+        {% for item in similar %}
+        <li class="list-group-item"><a href="/news/{{item.Pk}}.html">{{item.title}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

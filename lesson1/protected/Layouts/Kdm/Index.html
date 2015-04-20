@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns:t4="http://www.w3.org/1999/html">
+<head>
+    <meta>
+    <title>{% if view.meta.title %}{{view.meta.title}} - {% endif %}{{app.config.settings.title}}</title>
+    <meta charset='utf-8'>
+
+    {{publish('/Layouts/Kdm/assets')}}
+
+    <!--js-->
+    {{ publishJs() }}
+    <script type="text/javascript" src="{{asset('/Layouts/Kdm/assets/js/jquery.bxslider.min.js')}}"></script>
+    <!--css-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('/Layouts/Main/assets/css/cosmo/bootstrap.min.css')}}">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="{{asset('/Layouts/Kdm/assets/css/style.css')}}"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{{asset('/Layouts/Kdm/assets/css/jquery.bxslider.css')}}"/>
+    <!--fonts-->
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=cyrillic,latin' rel='stylesheet'
+          type='text/css'>
+
+    <script>
+        $(document).ready(function () {
+            $('.bxslider').bxSlider({
+                auto: true,
+                mode: 'fade'
+            });
+        });
+    </script>
+</head>
+<body>
+
+{% if app.flash.message is defined %}
+<div class="container">
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{app.flash.message}}
+    </div>
+</div>
+{% endif %}
+
+<header>
+    {% include 'Kdm/_header.html' %}
+</header>
+
+<div class="container">
+    <div class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <t4:section id="1" />
+                <!--
+                <section>
+                    <article>
+                        <div class="main-page-news top-news">
+                            <div class="date-news">20 октября 2014</div>
+                            <div class="title-news">
+                                <strong>
+                                    <a href="" alt="#" title="#">Молодёжное правительство Костромской области – новый
+                                        созыв!</a>
+                                </strong>
+                            </div>
+                            <div class="description-news">Открыт прием заявок на участие в конкурсе по формированию
+                                Молодежного правительства Костромской области 6 созыва!
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="main-page-news top-news top-news-important">
+                            <div class="date-news">20 октября 2014</div>
+                            <div class="title-news">
+                                <strong>
+                                    <a href="" alt="#" title="#">В авангарде профсоюзов</a>
+                                </strong>
+                            </div>
+                            <img src="{{asset('/Layouts/Kdm/assets/img/img1.jpg')}}" class="img-responsive"/>
+
+                            <div class="description-news">Открыт прием заявок на участие в конкурсе по формированию
+                                Молодежного правительства Костромской области 6 созыва!
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="main-page-news top-news">
+                            <div class="date-news">20 октября 2014</div>
+                            <div class="title-news">
+                                <strong>
+                                    <a href="" alt="#" title="#">Благотворительная акция ко Дню пожилых
+                                        людей «Доброе сердце»</a>
+                                </strong>
+                            </div>
+                            <img src="{{asset('/Layouts/Kdm/assets/img/img2.jpg')}}" class="img-responsive"/>
+
+                            <div class="description-news">1 октября 2014 года отмечается праздник – Международный день
+                                пожилого человека. ОГБУ «Молодёжный центр «Кострома» и региональный центр по развитию
+                                добровольческого движения Костромской области в целях привлечения внимания общества к
+                                проблемам людей пожилого возраста объявляет о старте благотворительной акции «Доброе
+                                сердце», посвящённой Международному дню пожилого человека.
+                            </div>
+                        </div>
+                    </article>
+                </section>
+                -->
+            </div>
+
+            <!--second column-->
+            <div class="col-md-3">
+                <t4:section id="2" />
+                <!--
+                <div class="section-title text-upp federal-news"><strong>Федеральные новости</strong></div>
+                <section>
+                    <article>
+                        <div class="main-page-news federal-news">
+                            <div class="date-news">20 октября 2014</div>
+                            <div class="title-news">
+                                <strong>
+                                    <a href="" alt="#" title="#">Седьмой открытый Международного конкурса вожатского
+                                        мастерства «Вожатское сердце планеты - 2014»</a>
+                                </strong>
+                            </div>
+                            <div class="description-news">Приглашаем вас принять участие в традиционных событиях,
+                                проводимых в рамках Седьмого открытого Международного конкурса вожатского мастерства
+                                «Вожатское сердце планеты - 2014», проводимом с 1 по 4 ноября 2014 г. на базе центра
+                                социальной поддержки молодежи и юношества им. К.Заслонова (Россия, г. Новосибирск).
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="main-page-news federal-news">
+                            <div class="date-news">20 октября 2014</div>
+                            <div class="title-news">
+                                <strong>
+                                    <a href="" alt="#" title="#">В Москве пройдет крупнейший чемпионат по современным
+                                        танцам «Project818 Russian Dance Championship 2014»</a></a>
+                                </strong>
+                            </div>
+                            <div class="description-news">Приглашаем вас принять участие в традиционных событиях,
+                                проводимых в рамках Седьмого открытого Международного конкурса вожатского мастерства
+                                «Вожатское сердце планеты - 2014», проводимом с 1 по 4 ноября 2014 г. на базе центра
+                                социальной поддержки молодежи и юношества им. К.Заслонова (Россия, г. Новосибирск).
+                            </div>
+                        </div>
+                    </article>
+                </section>
+                -->
+            </div>
+
+            <!--third column-->
+            <div class="col-md-3">
+                <t4:section id="3" />
+                <!--
+                <div class="section-title text-upp"><strong>скоро</strong></div>
+                <section>
+                    <article>
+                        <div class="main-page-news">
+                            <div class="date-news">20 октября 2014</div>
+                            <div class="title-news color-title">
+                                <strong>
+                                    <a href="" alt="#" title="#" style="color:#de0a05;">В Москве пройдет крупнейший
+                                        чемпионат по современным танцам «Project818 Russian Dance Championship 2014»</a>
+                                </strong>
+                            </div>
+                            <div class="description-news">Чемпионат по танцам проходит при поддержке: Департамента
+                                Культуры Москвы, Чупа Чупс, Dove, Lady Collection, Geometria, продюсерского центра
+                                ClockWork.
+                            </div>
+                        </div>
+                    </article>
+
+                    <article>
+                        <div class="main-page-news">
+                            <div class="date-news">20 октября 2014</div>
+                            <div class="title-news color-title">
+                                <strong>
+                                    <a href="" alt="#" title="#" style="color:#de0a05;">Молодежные проекты Проекты,
+                                        которые работают в Костромской области. Прими участие в одном из них!</a>
+                                </strong>
+                            </div>
+                            <div class="description-news">Долгие месяцы серьезных исследований, написания бизнес-плана и
+                                поиска инвесторов. Все проекты прошли экспертизу на форумах «Патриот», «Селигер»,
+                                фестивалях и конкурсах. Итак, знакомьтесь!
+                            </div>
+                        </div>
+                    </article>
+                </section>
+                -->
+                <!---->
+                <!--
+                <div class="section-title text-upp"><strong>Пресс-релизы</strong></div>
+                <section>
+                    <article>
+                        <!--
+                        Не знаю как вы будете задавать цвета заголовков, классами red, green, blue или через стили.
+                        Класс будет вещаться на весь блок или только на заголвок? разберетесь
+                        --><!--
+                        <div class="main-page-news title-green">
+                            <div class="date-news">20 октября 2014</div>
+                            <div class="title-news">
+                                <strong>
+                                    <a href="" alt="#" title="#" style="color:#77b400;">События с 07 по 13 апреля 2014
+                                        года</a>
+                                </strong>
+                            </div>
+                            <div class="description-news">Пресс-релиз отдела молодежной политики департамента
+                                образования и науки Костромской области
+                            </div>
+                        </div>
+                    </article>
+                </section>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="row"><t4:section id="4" /></div>
+    </div>
+</footer>
+
+{% include 'Kdm/_counters.html' %}
+
+</body>
+</html>
