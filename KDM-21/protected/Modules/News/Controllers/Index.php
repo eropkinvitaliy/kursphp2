@@ -18,7 +18,19 @@ class Index
 
     }
 
-    public function actionDefault($count=self::DEFAULT_STORIES_COUNT)
+    public function actionDefault($year)       // routes.php настроить под actionArchive не смог
+    {                                          // поэтому испытываю в actionDefault
+        $this->data->items = Story::findAll(
+            [
+                'order' => 'published DESC',
+                'where' => 'YEAR(published) = ' . $year,
+            ]
+        );
+        var_dump($this->data->items);
+        die;
+    }
+
+ /*   public function actionDefault($count=self::DEFAULT_STORIES_COUNT)
     {
         $this->data->topics = Topic::findAllTree();
         $this->data->items = Story::findAll(
@@ -27,7 +39,7 @@ class Index
                 'limit' => $count,
             ]
         );
-    }
+    } */
 
     public function actionStory($id)
     {

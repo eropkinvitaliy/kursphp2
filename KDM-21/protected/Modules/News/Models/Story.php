@@ -27,6 +27,26 @@ class Story
         ]
     ];
 
+  static public function findByYear()
+  {
+
+  }
+
+
+   static public function getStory ($published_year)
+   {
+       $coll = (time() - (31536000 * 42))/31536000 +2012;
+       $years = [];
+       for ($i=2013; $i <= $coll; $i++){
+           $years[] = $i;
+       }
+       arsort($years);
+       return $years;
+   }
+
+
+
+
     public function getShortLead($maxLength=120)
     {
         if ( mb_strlen( $this->lead) > $maxLength)
