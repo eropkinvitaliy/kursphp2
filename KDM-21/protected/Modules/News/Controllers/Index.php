@@ -13,9 +13,16 @@ class Index
 
     const DEFAULT_STORIES_COUNT = 20;
 
-    public function actionArchive()
+    public function actionArchive($year)
     {
-
+        $this->data->items = Story::findAll(
+            [
+                'order' => 'published DESC',
+                'where' => 'YEAR(published) = ' . $year,
+            ]
+        );
+        var_dump($this->data->items);
+        die;
     }
 
     public function actionDefault($year)       // routes.php настроить под actionArchive не смог

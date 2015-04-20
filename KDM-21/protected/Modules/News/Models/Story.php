@@ -33,7 +33,7 @@ class Story
   }
 
 
-   static public function getStory ($published_year)
+   /*static public function getStory ($published_year)
    {
        $coll = (time() - (31536000 * 42))/31536000 +2012;
        $years = [];
@@ -42,7 +42,7 @@ class Story
        }
        arsort($years);
        return $years;
-   }
+   }*/
 
 
 
