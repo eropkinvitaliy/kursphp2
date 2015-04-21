@@ -1,0 +1,26 @@
+{% extends 'Kdm/Inner.html' %}
+
+{% block content %}
+
+<ol class="breadcrumb">
+    <li><a href="/">Главная страница</a></li>
+    <li><a href="/news/">Новости</a></li>
+    <li class="active">Архив</li>
+</ol>
+
+<h3><a href="/news/archive">Архив новостей {{month}}.{{year}} года</a></h3>
+{% for item in items %}
+<div class="media" style="margin-top: 0; margin-bottom: 15px;">
+    <div class="pull-left">
+        <span class="label label-info">{{item.published|date('d.m.Y')}}</span>
+        {% if item.image %}<img class="media-object img-responsive img-thumbnail" src="{{item.image}}" style="max-width: 200px">{% endif %}
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading"><a href="/news/{{item.Pk}}.html">{{item.title}}</a></h4>
+        <div>{{item.lead|striptags|raw}}</div>
+    </div>
+</div>
+{% endfor %}
+<p class="pull-right"><a href="/news/topics/{{topic.Pk}}.html">
+    <i class="glyphicon glyphicon-chevron-right"></i>см. другие ленты новостей</a></p>
+{% endblock %}

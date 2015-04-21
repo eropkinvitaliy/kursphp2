@@ -13,7 +13,7 @@ class Index
 
     const DEFAULT_STORIES_COUNT = 20;
 
-   public function actionArchives($years='')
+   public function actionArchives()
    {
 
    }
@@ -21,11 +21,24 @@ class Index
     public function actionArchive($year)
     {
         $this->data->year = $year;
-        $this->data->topics = Topic::findAllTree();
+       // $this->data->topics = Topic::findAllTree();
         $this->data->items = Story::findAll(
             [
                 'order' => 'published DESC',
                 'where' => 'YEAR(published) = ' . $year,
+            ]
+        );
+    }
+
+    public function actionArchiveByMonth($year,$month)
+    {
+        $this->data->year = $year;
+        $this->data->month = $month;
+        $this->data->topics = Topic::findAllTree();
+        $this->data->items = Story::findAll(
+            [
+                'order' => 'published DESC',
+                'where' => 'YEAR(published) = ' . $year . ' AND MONTH(published) = ' . $month,
             ]
         );
     }
