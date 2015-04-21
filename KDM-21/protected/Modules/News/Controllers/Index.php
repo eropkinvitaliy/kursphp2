@@ -15,7 +15,13 @@ class Index
 
    public function actionArchives()
    {
-
+       $this->data->items = Story::findAll(
+           'select',
+           [
+               'order' => 'YEAR(published)',
+           ]
+       );
+       var_dump($this->data->items); die;
    }
 
     public function actionArchive($year)
