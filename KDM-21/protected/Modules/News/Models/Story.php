@@ -108,4 +108,10 @@ class Story
         return true;
     }
 
+   static public function getYears()
+    {
+        $table = Story::getTableName();
+        $query = 'SELECT DISTINCT(YEAR(published)) FROM ' . $table;
+        return (Story::findAllByQuery($query));
+    }
 }

@@ -15,13 +15,15 @@ class Index
 
    public function actionArchives()
    {
+       $this->data->items = Story::getYears();
+       /*var_dump($this->data->items);
+       die;
        $this->data->items = Story::findAll(
-           'select',
            [
-               'order' => 'YEAR(published)',
+               'SELECT DISTINCT(YEAR(published)) FROM table',
            ]
        );
-       var_dump($this->data->items); die;
+       var_dump($this->data->items); die;*/
    }
 
     public function actionArchive($year)
@@ -44,7 +46,8 @@ class Index
         $this->data->items = Story::findAll(
             [
                 'order' => 'published DESC',
-                'where' => 'YEAR(published) = ' . $year . ' AND MONTH(published) = ' . $month,
+                'where' => 'YEAR(published) = :year AND MONTH(published) = :month',
+                'params' => [':year' => $year, ':month' => $month],
             ]
         );
     }

@@ -8,6 +8,17 @@
     <li class="active">Архивы</li>
 </ol>
 
+{% for i, item in items %}
+<article>
+    <div class="main-page-news top-news clearfix">
+        <div class="date-news">{{item.published}}</div>
+
+    </div>
+</article>
+
+{% endfor %}
+
+
 
 <section class="panel panel-default">
     <div class="panel-body">
