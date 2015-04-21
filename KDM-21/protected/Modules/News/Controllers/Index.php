@@ -13,7 +13,7 @@ class Index
 
     const DEFAULT_STORIES_COUNT = 20;
 
-   public function actionArchives()
+   public function actionArchives($years='')
    {
 
    }

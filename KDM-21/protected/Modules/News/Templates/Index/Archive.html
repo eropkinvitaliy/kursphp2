@@ -9,22 +9,22 @@
     <li></li>
 </ol>
 
-<h1><a href="/news/archive">Архив новостей {{year}} года</a></h1>
-{% for topic in topics %}
-{% if topic.stories is empty %}
-{% else %}
-<section class="panel panel-default">
-    <div class="panel-body">
-        <h1><a href="/news/topics/{{topic.Pk}}.html">{{topic.title}}</a></h1>
-
-
-
-        <p class="pull-right"><a href="/news/topics/{{topic.Pk}}.html">все новости раздела</a></p>
+<h3><a href="/news/archive">Архив новостей {{year}} года</a></h3>
+{% for i, item in items %}
+<article>
+    <div class="main-page-news top-news clearfix">
+        <div class="date-news">{{item.published|date('d.m.Y')}}</div>
+        <div class="title-news">
+            <strong>
+                <a href="/news/{{item.Pk}}.html" alt="#" title="#">{{item.title}}</a>
+            </strong>
+        </div>
+       <!-- {% if item.image %}<img class="media-object img-responsive img-thumbnail pull-left" src="{{item.image}}"
+                                style="max-width: 200px; margin-right: 10px;">{% endif %} -->
+        <div class="description-news">{{item.lead|striptags|raw}}</div>
     </div>
-</section>
-{% endif %}
+</article>
 {% endfor %}
-
 <p class="pull-right"><a href="/news/topics/{{topic.Pk}}.html">
     <i class="glyphicon glyphicon-chevron-right"></i>см. другие ленты новостей</a></p>
 </div>
