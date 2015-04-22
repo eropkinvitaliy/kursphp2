@@ -13,9 +13,9 @@ class Index
 
     const DEFAULT_STORIES_COUNT = 20;
 
-    public function actionArchives()
-    {
-        $items = Story::getYears();
+    public function actionArchives()   //Сделал в одномерный массив, т.к. не получалось
+    {                                  //вывести во вьюхе элемент {{item.(YEAR(published))}}.
+        $items = Story::getYears();    //["(YEAR(published))"] элемент с таким ключём был в массиве
         foreach ($items as $item) {
             foreach ($item as $year) {
                 $allyears[] = $year;
