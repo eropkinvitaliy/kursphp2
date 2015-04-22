@@ -12,6 +12,9 @@ class Index
 {
 
     const DEFAULT_STORIES_COUNT = 20;
+    private   $rusmonths = [1 => 'Январь', 2 => 'Февраль', 3 => 'Март', 4 => 'Апрель', 5 => 'Май', 6 => 'Июнь',
+        7 => 'Июль', 8 => 'Август', 9 => 'Сентябрь', 10 => 'Октябрь', 11 => 'Ноябрь', 12 => 'Декабрь'];
+
 
     public function actionArchives()   //Сделал в одномерный массив, т.к. не получалось
     {                                  //вывести во вьюхе элемент {{item.(YEAR(published))}}.
@@ -21,13 +24,12 @@ class Index
                 $allyears[] = $year;
             }
         }
-       $this->data->years = $allyears;
+        $this->data->years = $allyears;
     }
 
     public function actionArchive($year)
     {
-        $this->data->months = [1=>'Январь',2=>'Февраль',3=>'Март',4=>'Апрель',5=>'Май',6=>'Июнь',
-            7=>'Июль',8=>'Август',9=>'Сентябрь',10=>'Октябрь',11=>'Ноябрь',12=>'Декабрь'];
+        $this->data->months = $this->rusmonths;
         $this->data->year = $year;
         $this->data->items = Story::findAll(
             [
@@ -40,11 +42,8 @@ class Index
 
     public function actionArchiveByMonth($year, $month)
     {
-        $months = [1=>'Январь',2=>'Февраль',3=>'Март',4=>'Апрель',5=>'Май',6=>'Июнь',
-            7=>'Июль',8=>'Август',9=>'Сентябрь',10=>'Октябрь',11=>'Ноябрь',12=>'Декабрь'];
-        $this->data->month = $months[$month];
+        $this->data->month = $this->rusmonths[$month];
         $this->data->year = $year;
-
         $this->data->topics = Topic::findAllTree();
         $this->data->items = Story::findAll(
             [
