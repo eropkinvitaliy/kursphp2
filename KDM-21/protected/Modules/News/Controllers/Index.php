@@ -13,35 +13,38 @@ class Index
 
     const DEFAULT_STORIES_COUNT = 20;
 
-   public function actionArchives()
-   {
-       $this->data->items = Story::getYears();
-       /*var_dump($this->data->items);
-       die;
-       $this->data->items = Story::findAll(
-           [
-               'SELECT DISTINCT(YEAR(published)) FROM table',
-           ]
-       );
-       var_dump($this->data->items); die;*/
-   }
+    public function actionArchives()
+    {
+        $items = Story::getYears();
+        foreach ($items as $item) {
+            foreach ($item as $year) {
+                $allyears[] = $year;
+            }
+        }
+       $this->data->years = $allyears;
+    }
 
     public function actionArchive($year)
     {
+        $this->data->months = [1=>'Январь',2=>'Февраль',3=>'Март',4=>'Апрель',5=>'Май',6=>'Июнь',
+            7=>'Июль',8=>'Август',9=>'Сентябрь',10=>'Октябрь',11=>'Ноябрь',12=>'Декабрь'];
         $this->data->year = $year;
-       // $this->data->topics = Topic::findAllTree();
         $this->data->items = Story::findAll(
             [
                 'order' => 'published DESC',
-                'where' => 'YEAR(published) = ' . $year,
+                'where' => 'YEAR(published) = :year',
+                'params' => [':year' => $year],
             ]
         );
     }
 
-    public function actionArchiveByMonth($year,$month)
+    public function actionArchiveByMonth($year, $month)
     {
+        $months = [1=>'Январь',2=>'Февраль',3=>'Март',4=>'Апрель',5=>'Май',6=>'Июнь',
+            7=>'Июль',8=>'Август',9=>'Сентябрь',10=>'Октябрь',11=>'Ноябрь',12=>'Декабрь'];
+        $this->data->month = $months[$month];
         $this->data->year = $year;
-        $this->data->month = $month;
+
         $this->data->topics = Topic::findAllTree();
         $this->data->items = Story::findAll(
             [

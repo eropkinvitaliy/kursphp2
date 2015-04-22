@@ -4,6 +4,7 @@ namespace App\Modules\News\Models;
 
 use T4\Core\Collection;
 use T4\Core\Exception;
+use T4\Core\Std;
 use T4\Fs\Helpers;
 use T4\Http\Uploader;
 use T4\Mvc\Application;
@@ -110,8 +111,7 @@ class Story
 
    static public function getYears()
     {
-        $table = Story::getTableName();
-        $query = 'SELECT DISTINCT(YEAR(published)) FROM ' . $table;
-        return (Story::findAllByQuery($query));
+        $query = 'SELECT DISTINCT(YEAR(published)) FROM ' . static::getTableName() . ' ORDER BY YEAR(published) DESC';
+        return (static::findAllByQuery($query));
     }
 }

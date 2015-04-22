@@ -13,12 +13,11 @@
     <div class="main-page-news top-news clearfix">
 
         <ul>
-            <li><a href="/news/archive/{{year}}/1">Январь</a></li>
-            <li><a href="/news/archive/{{year}}/2">Февраль</a></li>
-            <li><a href="/news/archive/{{year}}/3">Март</a></li>
-            <li><a href="/news/archive/{{year}}/4">Апрель</a></li>
-            <li><a href="/news/archive/{{year}}/5">Май</a></li>
-            <li></li>
+            {% for key, month in months %}
+            <li>
+                <a href="/news/archive/{{year}}/{{key}}">{{month}}</a>
+            </li>
+            {% endfor %}
         </ul>
     </div>
 </article>
