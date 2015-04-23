@@ -9,9 +9,9 @@
 </ol>
 
 <h3><a href="/news/archive">Архив новостей {{year}} года</a></h3>
-<article>
-    <div class="main-page-news top-news clearfix">
-
+<section class="panel panel-default">
+    <div class="panel-body">
+        <h1>Архивы новостей</h1>
         <ul>
             {% for key, month in months %}
             <li>
@@ -19,8 +19,8 @@
             </li>
             {% endfor %}
         </ul>
+        <p class="pull-right"><a href="/news/archives/all">
+            <i class="glyphicon glyphicon-chevron-right"></i>вернуться к архивам</a></p>
     </div>
-</article>
-<p class="pull-right"><a href="/news/topics/{{topic.Pk}}.html">
-    <i class="glyphicon glyphicon-chevron-right"></i>см. другие ленты новостей</a></p>
+</section>
 {% endblock %}
