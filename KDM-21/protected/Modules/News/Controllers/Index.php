@@ -43,11 +43,15 @@ class Index
     public function actionArchiveByMonth($year, $month)
     {
         $this->data->month = $this->rusmonths[$month];
+        $this->data->monthnum = $month;
         $this->data->year = $year;
         $this->data->topics = Topic::findAllTree();
+
+ /*       ?> <pre> <?php var_dump($this->data->topics);?></pre><?php */
+ //       die;
+
         $this->data->items = Story::findAll(
             [
-                'order' => 'published DESC',
                 'where' => 'YEAR(published) = :year AND MONTH(published) = :month',
                 'params' => [':year' => $year, ':month' => $month],
             ]

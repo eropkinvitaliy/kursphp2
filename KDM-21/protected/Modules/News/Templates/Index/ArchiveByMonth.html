@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<ol class="breadcrumb">
+<ol class="breadcrumb" xmlns="http://www.w3.org/1999/html">
     <li><a href="/">Главная страница</a></li>
     <li><a href="/news/">Новости</a></li>
     <li><a href="/news/archives/all">Архивы</a></li>
@@ -10,7 +10,25 @@
     <li class="active">{{month}}</li>
 </ol>
 
-<h3>Архив новостей за  {{month}} {{year}} года</h3>
+<section class="panel panel-default">
+    <div class="panel-body">
+        <h4 style="color: #0044cc">Рубрики новостей</h4>
+        <ul>
+            <li class="active"><p><a href="/news/archive/{{year}}/{{monthnum}}"><i>Все новости</i></a></p></li>
+            {% for topic in topics %}
+            {% if topic.stories is empty %}
+            {% else %}
+            <li><p><a href="/news/topics/{{topic.Pk}}.html"><i>{{topic.title}}</i></a></p></li>
+            <!--        <t4:block path="/News//NewsByTopic" template="main" id="{{topic.Pk}}" count="4"/>
+                    <p class="pull-right"><a href="/news/topics/{{topic.Pk}}.html"><i class="glyphicon glyphicon-chevron-right"></i>
+                        все новости раздела</a></p> -->
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</section>
+
+<h3>Архив новостей за {{month}} {{year}} года</h3>
 {% for i, item in items %}
 <article>
     <div class="main-page-news top-news clearfix">
