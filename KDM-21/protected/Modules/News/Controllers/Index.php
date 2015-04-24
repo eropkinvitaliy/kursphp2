@@ -12,7 +12,7 @@ class Index
 {
 
     const DEFAULT_STORIES_COUNT = 20;
-    private   $rusmonths = [1 => 'Январь', 2 => 'Февраль', 3 => 'Март', 4 => 'Апрель', 5 => 'Май', 6 => 'Июнь',
+    private $rusmonths = [1 => 'Январь', 2 => 'Февраль', 3 => 'Март', 4 => 'Апрель', 5 => 'Май', 6 => 'Июнь',
         7 => 'Июль', 8 => 'Август', 9 => 'Сентябрь', 10 => 'Октябрь', 11 => 'Ноябрь', 12 => 'Декабрь'];
 
 
@@ -46,10 +46,6 @@ class Index
         $this->data->monthnum = $month;
         $this->data->year = $year;
         $this->data->topics = Topic::findAllTree();
-
- /*       ?> <pre> <?php var_dump($this->data->topics);?></pre><?php */
- //       die;
-
         $this->data->items = Story::findAll(
             [
                 'where' => 'YEAR(published) = :year AND MONTH(published) = :month',
@@ -112,5 +108,32 @@ class Index
         $this->view->meta->title = $this->data->topic->title;
     }
 
-
+    public function actionArchiveMonthByTopic($year, $month, $id, $count = self::DEFAULT_STORIES_COUNT, $color = 'default')
+    {
+        $this->data->topic = Topic::findByPK($id);
+        if (empty($this->data->topic)) {
+            throw new E404Exception;
+        }
+        $this->data->page = $this->app->request->get->page ?: 1;
+        $this->data->total = Story::countAllByColumn('__topic_id', $this->data->topic->getPk(),
+            [
+                'limit' => $count,
+                'where' => ' YEAR(published)= ' . $year . ' AND MONTH(published)= ' . $month,
+//                'where' => 'YEAR(published) = :year AND MONTH(published) = :month',
+//                'params' => [':year' => $year, ':month' => $month],
+            ]
+        );
+        $this->data->size = $count;
+        $this->data->items = Story::findAllByColumn(
+            '__topic_id',
+            $this->data->topic->getPk(),
+            [
+                'offset' => ($this->data->page - 1) * $count,
+                'limit' => $count,
+                'where' => ' YEAR(published)= ' . $year . ' AND MONTH(published)= ' . $month,
+            ]
+        );
+        $this->data->color = $color;
+        $this->view->meta->title = $this->data->topic->title;
+    }
 }

@@ -5,6 +5,7 @@ return [
     '/index' => '///',
 
 
+    '/news/archive/topic/<1>/<2>/<3>' => '/News/Index/ArchiveMonthByTopic(year=<1>,month=<2>,id=<3>)',
     '/news/archive/<1>/<2>' => '/News/Index/ArchiveByMonth(year=<1>,month=<2>)',
     '/news/topics/<1>' => '/News/Index/NewsByTopic(id=<1>)',
     '/news/archive/<1>' => '/News/Index/Archive(year=<1>)',
