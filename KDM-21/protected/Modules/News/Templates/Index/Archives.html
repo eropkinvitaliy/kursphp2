@@ -12,10 +12,12 @@
     <div class="panel-body">
         <h1>Архивы новостей</h1>
         <ul>
+            {% for years in items %}
             {% for year in years %}
             <li>
                 <a href="/news/archive/{{year}}">{{year}}</a>
             </li>
+            {% endfor %}
             {% endfor %}
         </ul>
         <p class="pull-right"><a href="/news/">

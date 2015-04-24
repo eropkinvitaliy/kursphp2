@@ -18,13 +18,16 @@ class Index
 
     public function actionArchives()   //Сделал в одномерный массив, т.к. не получалось
     {                                  //вывести во вьюхе элемент {{item.(YEAR(published))}}.
-        $items = Story::getYears();    //["(YEAR(published))"] элемент с таким ключём был в массиве
-        foreach ($items as $item) {
+        $this->data->items = Story::getYears();    //["(YEAR(published))"] элемент с таким ключём был в массиве
+     ?><pre><?php   var_dump($this->data->items);?></pre><?php
+
+
+ /*       foreach ($items as $item) {
             foreach ($item as $year) {
                 $allyears[] = $year;
             }
         }
-        $this->data->years = $allyears;
+        $this->data->years = $allyears;*/
     }
 
     public function actionArchive($year)
