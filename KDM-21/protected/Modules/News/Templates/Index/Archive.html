@@ -11,7 +11,7 @@
 <h3><a href="/news/archive">Архив новостей {{year}} года</a></h3>
 <section class="panel panel-default">
     <div class="panel-body">
-        <h1>Архивы новостей</h1>
+        <h4>За какой месяц Вы хотите посмотреть архив?</h4>
         <ul>
             {% for key, month in months %}
             <li>
@@ -19,6 +19,10 @@
             </li>
             {% endfor %}
         </ul>
+<!--        <form>
+            <p>Выберите дату: <input type="month" name="calendar">
+                <input type="submit" value="Отправить"></p>
+        </form>  -->
         <p class="pull-right"><a href="/news/archives/all">
             <i class="glyphicon glyphicon-chevron-right"></i>вернуться к архивам</a></p>
     </div>
