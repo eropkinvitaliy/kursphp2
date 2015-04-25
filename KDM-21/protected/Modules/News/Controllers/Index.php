@@ -6,6 +6,7 @@ use App\Modules\News\Models\Story;
 use App\Modules\News\Models\Topic;
 use T4\Http\E404Exception;
 use T4\Mvc\Controller;
+use T4\Dbal\Drivers\Mysql;
 
 class Index
     extends Controller
@@ -120,25 +121,28 @@ class Index
             throw new E404Exception;
         }
         $this->data->page = $this->app->request->get->page ?: 1;
-        $this->data->total = Story::countAllByColumn('__topic_id', $this->data->topic->getPk(),
+        $column = '__topic_id';
+        $this->data->value = $this->data->topic->getPk();
+        $this->data->total = Story::countAll(
             [
                 'limit' => $count,
-                'where' => ' YEAR(published)= ' . $year . ' AND MONTH(published)= ' . $month,
+                'where' => '`' . $column . '`=:value ' . ' AND YEAR(published)= :year AND MONTH(published)= :month',
+                'params' => [':value' => $this->data->value, ':year' => $year, ':month' => $month],
             ]
         );
         $this->data->size = $count;
-        $this->data->items = Story::findAllByColumn(
-            '__topic_id',
+        $this->data->items = Story::findAllByColumn('__topic_id',
             $this->data->topic->getPk(),
             [
                 'offset' => ($this->data->page - 1) * $count,
                 'limit' => $count,
-                'where' => ' YEAR(published)= ' . $year . ' AND MONTH(published)= ' . $month,
+                'where' => 'YEAR(published) = ' . $year . ' AND MONTH(published) = ' . $month,
             ]
         );
         $this->data->month = $this->rusmonths[$month];
         $this->data->year = $year;
         $this->data->color = $color;
+        $this->data->monthnum = $month;
         $this->view->meta->title = $this->data->topic->title;
     }
 }

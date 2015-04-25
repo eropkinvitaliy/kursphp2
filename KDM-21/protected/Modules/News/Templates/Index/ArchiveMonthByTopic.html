@@ -7,7 +7,8 @@
     <li><a href="/news/">Новости</a></li>
     <li><a href="/news/archives/all">Архивы</a></li>
     <li><a href="/news/archive/{{year}}">Архив {{year}}</a></li>
-    <li class="active">{{month}}</li>
+    <li><a href="/news/archive/{{year}}/{{monthnum}}"> {{month}}</a></li>
+    <li class="active">{{topic.title}}</li>
 </ol>
 
 <h2 style="margin-top: 0; margin-bottom: 30px">{{topic.title}}, (всего: {{total}})</h2>
@@ -24,6 +25,9 @@
     </div>
 </div>
 {% endfor %}
+
+<p class="pull-right"><a href="/news/archive/{{year}}/{{monthnum}}">
+    <i class="glyphicon glyphicon-chevron-right"></i>вернуться к выбору месяца</a></p>
 
 {{widget('pager', {total: total, size: size, active: page})}}
 

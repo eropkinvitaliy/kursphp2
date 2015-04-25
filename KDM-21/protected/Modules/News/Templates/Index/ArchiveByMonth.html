@@ -42,8 +42,8 @@
 </article>
 
 {% endfor %}
-<p class="pull-right"><a href="/news/topics/{{topic.Pk}}.html">
-    <i class="glyphicon glyphicon-chevron-right"></i>см. другие ленты новостей</a></p>
+<p class="pull-right"><a href="/news/archive/{{year}}/{{monthnum}}">
+    <i class="glyphicon glyphicon-chevron-right"></i>вернуться к выбору месяца</a></p>
 
 {{widget('pager', {total: total, size: size, active: page})}}
 {% endblock %}
