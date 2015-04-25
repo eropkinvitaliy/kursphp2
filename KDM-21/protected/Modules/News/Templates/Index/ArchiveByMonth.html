@@ -25,7 +25,7 @@
     </div>
 </section>
 
-<!-- <h3>Архив новостей за {{month}} {{year}} года</h3>
+<h3>Архив новостей за {{month}} {{year}} года. (всего - {{total}}) </h3>
 {% for i, item in items %}
 <article>
     <div class="main-page-news top-news clearfix">
@@ -41,7 +41,9 @@
     </div>
 </article>
 
-{% endfor %}  -->
+{% endfor %}
 <p class="pull-right"><a href="/news/topics/{{topic.Pk}}.html">
     <i class="glyphicon glyphicon-chevron-right"></i>см. другие ленты новостей</a></p>
+
+{{widget('pager', {total: total, size: size, active: page})}}
 {% endblock %}

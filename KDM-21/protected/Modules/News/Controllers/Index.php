@@ -16,46 +16,6 @@ class Index
         7 => 'Июль', 8 => 'Август', 9 => 'Сентябрь', 10 => 'Октябрь', 11 => 'Ноябрь', 12 => 'Декабрь'];
 
 
-    public function actionArchives()   //Сделал в одномерный массив, т.к. не получалось
-    {                                  //вывести во вьюхе элемент {{item.(YEAR(published))}}.
-        $this->data->items = Story::getYears();    //["(YEAR(published))"] элемент с таким ключём был в массиве
-     ?><pre><?php   var_dump($this->data->items);?></pre><?php
-
-
- /*       foreach ($items as $item) {
-            foreach ($item as $year) {
-                $allyears[] = $year;
-            }
-        }
-        $this->data->years = $allyears;*/
-    }
-
-    public function actionArchive($year)
-    {
-        $this->data->months = $this->rusmonths;
-        $this->data->year = $year;
-        $this->data->items = Story::findAll(
-            [
-                'order' => 'published DESC',
-                'where' => 'YEAR(published) = :year',
-                'params' => [':year' => $year],
-            ]
-        );
-    }
-
-    public function actionArchiveByMonth($year, $month)
-    {
-        $this->data->month = $this->rusmonths[$month];
-        $this->data->monthnum = $month;
-        $this->data->year = $year;
-        $this->data->topics = Topic::findAllTree();
-        $this->data->items = Story::findAll(
-            [
-                'where' => 'YEAR(published) = :year AND MONTH(published) = :month',
-                'params' => [':year' => $year, ':month' => $month],
-            ]
-        );
-    }
 
     public function actionDefault($count = self::DEFAULT_STORIES_COUNT)
     {
@@ -111,6 +71,48 @@ class Index
         $this->view->meta->title = $this->data->topic->title;
     }
 
+    public function actionArchives()
+    {
+        $this->data->items = Story::getYears();
+    }
+
+    public function actionArchive($year)
+    {
+        $this->data->months = $this->rusmonths;
+        $this->data->year = $year;
+        $this->data->items = Story::findAll(
+            [
+                'order' => 'published DESC',
+                'where' => 'YEAR(published) = :year',
+                'params' => [':year' => $year],
+            ]
+        );
+    }
+
+    public function actionArchiveByMonth($year, $month, $count = self::DEFAULT_STORIES_COUNT)
+    {
+        $this->data->month = $this->rusmonths[$month];
+        $this->data->monthnum = $month;
+        $this->data->year = $year;
+        $this->data->page = $this->app->request->get->page ?: 1;
+        $this->data->size = $count;
+        $this->data->total = Story::countAll(
+            [
+                'where' => 'YEAR(published) = :year AND MONTH(published) = :month',
+                'params' => [':year' => $year, ':month' => $month],
+            ]
+        );
+        $this->data->topics = Topic::findAllTree();
+        $this->data->items = Story::findAll(
+            [
+                'offset' => ($this->data->page - 1) * $count,
+                'limit' => $count,
+                'where' => 'YEAR(published) = :year AND MONTH(published) = :month',
+                'params' => [':year' => $year, ':month' => $month],
+            ]
+        );
+    }
+
     public function actionArchiveMonthByTopic($year, $month, $id, $count = self::DEFAULT_STORIES_COUNT, $color = 'default')
     {
         $this->data->topic = Topic::findByPK($id);
@@ -122,8 +124,6 @@ class Index
             [
                 'limit' => $count,
                 'where' => ' YEAR(published)= ' . $year . ' AND MONTH(published)= ' . $month,
-//                'where' => 'YEAR(published) = :year AND MONTH(published) = :month',
-//                'params' => [':year' => $year, ':month' => $month],
             ]
         );
         $this->data->size = $count;
@@ -136,6 +136,8 @@ class Index
                 'where' => ' YEAR(published)= ' . $year . ' AND MONTH(published)= ' . $month,
             ]
         );
+        $this->data->month = $this->rusmonths[$month];
+        $this->data->year = $year;
         $this->data->color = $color;
         $this->view->meta->title = $this->data->topic->title;
     }
