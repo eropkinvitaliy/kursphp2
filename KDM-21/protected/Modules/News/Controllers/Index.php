@@ -6,7 +6,6 @@ use App\Modules\News\Models\Story;
 use App\Modules\News\Models\Topic;
 use T4\Http\E404Exception;
 use T4\Mvc\Controller;
-use T4\Dbal\Drivers\Mysql;
 
 class Index
     extends Controller
