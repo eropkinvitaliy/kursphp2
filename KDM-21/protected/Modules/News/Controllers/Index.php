@@ -78,12 +78,7 @@ class Index
         $this->data->page = $this->app->request->get->page ?: 1;
         $count = self::DEFAULT_STORIES_COUNT;
         $this->data->size = $count;
-        $this->data->total = Story::countAll(
-            [
-                'where' => 'YEAR(published) = :year',
-                'params' => [':year' => $year],
-            ]
-        );
+        $this->data->total = Story::countAllByDate($year);
         $this->data->items = Story::findAll(
             [
                 'order' => 'published DESC',
@@ -101,12 +96,7 @@ class Index
         $this->data->year = $year;
         $this->data->page = $this->app->request->get->page ?: 1;
         $this->data->size = $count;
-        $this->data->total = Story::countAll(
-            [
-                'where' => 'YEAR(published) = :year AND MONTH(published) = :month',
-                'params' => [':year' => $year, ':month' => $month],
-            ]
-        );
+        $this->data->total = Story::countAllByDate($year, $month);
         $this->data->topics = Topic::findAllTree();
         $this->data->items = Story::findAll(
             [
@@ -127,13 +117,7 @@ class Index
         $this->data->page = $this->app->request->get->page ?: 1;
         $column = '__topic_id';
         $this->data->value = $this->data->topic->getPk();
-        $this->data->total = Story::countAll(
-            [
-                'limit' => $count,
-                'where' => '`' . $column . '`=:value ' . ' AND YEAR(published)= :year AND MONTH(published)= :month',
-                'params' => [':value' => $this->data->value, ':year' => $year, ':month' => $month],
-            ]
-        );
+        $this->data->total = Story::countAllByDateColumn($column, $this->data->value, $year, $month);
         $this->data->size = $count;
         $this->data->items = Story::findAllByColumn('__topic_id',
             $this->data->topic->getPk(),

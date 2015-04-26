@@ -108,9 +108,57 @@ class Story
         return true;
     }
 
-   static public function getYears()
+    static public function getYears()
     {
         $query = 'SELECT DISTINCT(YEAR(published)) FROM ' . self::getTableName() . ' ORDER BY YEAR(published) DESC';
         return self::findAllByQuery($query);
+    }
+
+    static public function countAllByDate($year = null, $month = null, $day = null)
+    {
+        $valuewhere =
+            (!empty($year) ? ' YEAR(published) = :year' : '') .
+            (!empty($month) ? ' AND MONTH(published) = :month' : '') .
+            (!empty($day) ? ' AND DAY(published) = :day' : '');
+        if (!empty($year)) {
+            $params = [':year' => $year];
+        }
+        if (!empty($month)) {
+            $params += [':month' => $month];
+        }
+        if (!empty($day)) {
+            $params += [':day' => $day];
+        }
+        $options = [
+            'where' => $valuewhere,
+            'params' => $params,
+        ];
+        return self::countAll($options);
+    }
+
+    static public function countAllByDateColumn($column, $value, $year = null, $month = null, $day = null)
+    {
+        $wherevalue =
+            (!empty($year) ? ' YEAR(published) = :year' : '') .
+            (!empty($month) ? ' AND MONTH(published) = :month' : '') .
+            (!empty($day) ? ' AND DAY(published) = :day' : '') .
+            (!empty($column) ? ' AND `' . $column . '`=:value ' : '');
+        if (!empty($year)) {
+            $params = [':year' => $year];
+        }
+        if (!empty($month)) {
+            $params += [':month' => $month];
+        }
+        if (!empty($day)) {
+            $params += [':day' => $day];
+        }
+        if (!empty($value)) {
+            $params += [':value' => $value];
+        }
+        $options = [
+            'where' => $wherevalue,
+            'params' => $params,
+        ];
+        return self::countAll($options);
     }
 }
