@@ -11,12 +11,7 @@ use T4\Dbal\Drivers\Mysql;
 class Index
     extends Controller
 {
-
     const DEFAULT_STORIES_COUNT = 20;
-    private $rusmonths = [1 => 'Январь', 2 => 'Февраль', 3 => 'Март', 4 => 'Апрель', 5 => 'Май', 6 => 'Июнь',
-        7 => 'Июль', 8 => 'Август', 9 => 'Сентябрь', 10 => 'Октябрь', 11 => 'Ноябрь', 12 => 'Декабрь'];
-
-
 
     public function actionDefault($count = self::DEFAULT_STORIES_COUNT)
     {
@@ -79,11 +74,21 @@ class Index
 
     public function actionArchive($year)
     {
-        $this->data->months = $this->rusmonths;
         $this->data->year = $year;
+        $this->data->page = $this->app->request->get->page ?: 1;
+        $count = self::DEFAULT_STORIES_COUNT;
+        $this->data->size = $count;
+        $this->data->total = Story::countAll(
+            [
+                'where' => 'YEAR(published) = :year',
+                'params' => [':year' => $year],
+            ]
+        );
         $this->data->items = Story::findAll(
             [
                 'order' => 'published DESC',
+                'offset' => ($this->data->page - 1) * $count,
+                'limit' => $count,
                 'where' => 'YEAR(published) = :year',
                 'params' => [':year' => $year],
             ]
@@ -92,7 +97,6 @@ class Index
 
     public function actionArchiveByMonth($year, $month, $count = self::DEFAULT_STORIES_COUNT)
     {
-        $this->data->month = $this->rusmonths[$month];
         $this->data->monthnum = $month;
         $this->data->year = $year;
         $this->data->page = $this->app->request->get->page ?: 1;
@@ -139,7 +143,6 @@ class Index
                 'where' => 'YEAR(published) = ' . $year . ' AND MONTH(published) = ' . $month,
             ]
         );
-        $this->data->month = $this->rusmonths[$month];
         $this->data->year = $year;
         $this->data->color = $color;
         $this->data->monthnum = $month;
