@@ -110,7 +110,7 @@ class Story
 
    static public function getYears()
     {
-        $query = 'SELECT DISTINCT(YEAR(published)) FROM ' . static::getTableName() . ' ORDER BY YEAR(published) DESC';
+        $query = 'SELECT DISTINCT(YEAR(published)) FROM ' . self::getTableName() . ' ORDER BY YEAR(published) DESC';
         return self::findAllByQuery($query);
     }
 }
