@@ -15,26 +15,29 @@ class Story
     static protected $schema = [
         'table' => 'newsstories',
         'columns' => [
-            'title' => ['type' => 'string'],
-            'published' => ['type' => 'datetime'],
-            'lead' => ['type' => 'text'],
-            'image' => ['type' => 'string', 'default' => ''],
-            'text' => ['type' => 'text'],
+            'title' => ['type'=>'string'],
+            'published' => ['type'=>'datetime'],
+            'lead' => ['type'=>'text'],
+            'image' => ['type'=>'string', 'default'=>''],
+            'text' => ['type'=>'text'],
         ],
         'relations' => [
-            'topic' => ['type' => self::BELONGS_TO, 'model' => 'App\Modules\News\Models\Topic'],
+            'topic' => ['type'=>self::BELONGS_TO, 'model'=>'App\Modules\News\Models\Topic'],
             'files' => ['type' => self::HAS_MANY, 'model' => '\App\Modules\News\Models\File'],
         ]
     ];
 
-    public function getShortLead($maxLength = 120)
+    public function getShortLead($maxLength=120)
     {
-        if (mb_strlen($this->lead) > $maxLength) {
-            $sourceStr = strip_tags($this->lead);
-            $words = explode(' ', mb_substr($sourceStr, 0, $maxLength));
+        if ( mb_strlen( $this->lead) > $maxLength)
+        {
+            $sourceStr=strip_tags($this->lead);
+            $words=explode(' ',mb_substr( $sourceStr,0,$maxLength));
             array_pop($words);
-            return implode(' ', $words);
-        } else {
+            return implode(' ',$words);
+        }
+        else
+        {
             return $this->lead;
         }
     }
@@ -49,9 +52,17 @@ class Story
             $uploader = new Uploader($formFieldName);
             $uploader->setPath('/public/news/stories/images');
             $image = $uploader();
-            if ($this->image)
+            if ($this->image) {
                 $this->deleteImage();
+            }
             $this->image = $image;
+
+            $realUploadPath = \T4\Fs\Helpers::getRealPath($image);  // Вот тут попытка изменения размера картинки
+            $this->loadImage($realUploadPath);                      // Внизу 5 методов
+//            unlink($realUploadPath);
+            $this->resizeImage(120,100);
+            $this->saveImage($realUploadPath);
+
         } catch (Exception $e) {
             $this->image = null;
         }
@@ -108,57 +119,45 @@ class Story
         return true;
     }
 
-    static public function getYears()
-    {
-        $query = 'SELECT DISTINCT(YEAR(published)) FROM ' . self::getTableName() . ' ORDER BY YEAR(published) DESC';
-        return self::findAllByQuery($query);
+    function loadImage($filename) {
+        $imageinfo = getimagesize($filename);
+        $this->imagetype = $imageinfo[2];
+        if( $this->imagetype == IMAGETYPE_JPEG ) {
+            $this->imageres = imagecreatefromjpeg($filename);
+        } elseif( $this->imagetype == IMAGETYPE_GIF ) {
+            $this->imageres = imagecreatefromgif($filename);
+        } elseif( $this->imagetype == IMAGETYPE_PNG ) {
+            $this->imageres = imagecreatefrompng($filename);
+        }
     }
 
-    static public function countAllByDate($year = null, $month = null, $day = null)
+    function getWidth()
     {
-        $valuewhere =
-            (!empty($year) ? ' YEAR(published) = :year' : '') .
-            (!empty($month) ? ' AND MONTH(published) = :month' : '') .
-            (!empty($day) ? ' AND DAY(published) = :day' : '');
-        if (!empty($year)) {
-            $params = [':year' => $year];
-        }
-        if (!empty($month)) {
-            $params += [':month' => $month];
-        }
-        if (!empty($day)) {
-            $params += [':day' => $day];
-        }
-        $options = [
-            'where' => $valuewhere,
-            'params' => $params,
-        ];
-        return self::countAll($options);
+        return imagesx($this->imageres);
     }
 
-    static public function countAllByDateColumn($column, $value, $year = null, $month = null, $day = null)
+    function getHeight()
     {
-        $wherevalue =
-            (!empty($year) ? ' YEAR(published) = :year' : '') .
-            (!empty($month) ? ' AND MONTH(published) = :month' : '') .
-            (!empty($day) ? ' AND DAY(published) = :day' : '') .
-            (!empty($column) ? ' AND `' . $column . '`=:value ' : '');
-        if (!empty($year)) {
-            $params = [':year' => $year];
+        return imagesy($this->imageres);
+    }
+
+    function resizeImage($width,$height)
+    {
+        $newimage = imagecreatetruecolor($width, $height);
+        imagecopyresampled($newimage, $this->imageres, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
+        $this->imageres = $newimage;
+    }
+
+    function saveImage($filename, $imagetype=IMAGETYPE_JPEG, $compression=75, $permissions=null) {
+        if( $imagetype == IMAGETYPE_JPEG ) {
+            imagejpeg($this->imageres,$filename,$compression);
+        } elseif( $imagetype == IMAGETYPE_GIF ) {
+            imagegif($this->imageres,$filename);
+        } elseif( $imagetype == IMAGETYPE_PNG ) {
+            imagepng($this->imageres,$filename);
         }
-        if (!empty($month)) {
-            $params += [':month' => $month];
+        if( $permissions != null) {
+            chmod($filename,$permissions);
         }
-        if (!empty($day)) {
-            $params += [':day' => $day];
-        }
-        if (!empty($value)) {
-            $params += [':value' => $value];
-        }
-        $options = [
-            'where' => $wherevalue,
-            'params' => $params,
-        ];
-        return self::countAll($options);
     }
 }
