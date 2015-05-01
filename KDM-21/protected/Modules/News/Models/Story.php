@@ -44,6 +44,10 @@ class Story
 
     public function uploadImage($formFieldName)
     {
+        if ($this->image) {                 //Удаляем предыдущую картику, что-бы не засорять сервер клонами и мусором
+            $realUploadPath = \T4\Fs\Helpers::getRealPath($this->image);
+            @unlink($realUploadPath);
+        }
         $request = Application::getInstance()->request;
         if (!$request->existsFilesData() || !$request->isUploaded($formFieldName) || $request->isUploadedArray($formFieldName))
             return $this;
@@ -56,13 +60,10 @@ class Story
                 $this->deleteImage();
             }
             $this->image = $image;
-
-            $realUploadPath = \T4\Fs\Helpers::getRealPath($image);  // Вот тут попытка изменения размера картинки
-            $this->loadImage($realUploadPath);                      // Внизу 5 методов
-//            unlink($realUploadPath);
-            $this->resizeImage(120,100);
-            $this->saveImage($realUploadPath);
-
+            $realUploadPath = \T4\Fs\Helpers::getRealPath($image);  // Смотрим где находится картинка
+            $this->loadImage($realUploadPath);                      // Загружаем для изменений
+            $this->resizeImage(120,100);                            // Изменяем. Можно попробовать просто по ширине
+            $this->saveImage($realUploadPath);                      // Сохраняем изменения в то место, откуда взяли
         } catch (Exception $e) {
             $this->image = null;
         }
