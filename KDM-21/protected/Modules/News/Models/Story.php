@@ -42,6 +42,26 @@ class Story
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function uploadImage($formFieldName)
     {
         if ($this->image) {                 //Удаляем предыдущую картику, что-бы не засорять сервер клонами и мусором
