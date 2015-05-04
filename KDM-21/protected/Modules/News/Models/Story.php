@@ -15,63 +15,35 @@ class Story
     static protected $schema = [
         'table' => 'newsstories',
         'columns' => [
-            'title' => ['type'=>'string'],
-            'published' => ['type'=>'datetime'],
-            'lead' => ['type'=>'text'],
-            'image' => ['type'=>'string', 'default'=>''],
-            'text' => ['type'=>'text'],
+            'title' => ['type' => 'string'],
+            'published' => ['type' => 'datetime'],
+            'lead' => ['type' => 'text'],
+            'image' => ['type' => 'string', 'default' => ''],
+            'text' => ['type' => 'text'],
         ],
         'relations' => [
-            'topic' => ['type'=>self::BELONGS_TO, 'model'=>'App\Modules\News\Models\Topic'],
+            'topic' => ['type' => self::BELONGS_TO, 'model' => 'App\Modules\News\Models\Topic'],
             'files' => ['type' => self::HAS_MANY, 'model' => '\App\Modules\News\Models\File'],
         ]
     ];
 
-    public function getShortLead($maxLength=120)
+    public function getShortLead($maxLength = 120)
     {
-        if ( mb_strlen( $this->lead) > $maxLength)
-        {
-            $sourceStr=strip_tags($this->lead);
-            $words=explode(' ',mb_substr( $sourceStr,0,$maxLength));
+        if (mb_strlen($this->lead) > $maxLength) {
+            $sourceStr = strip_tags($this->lead);
+            $words = explode(' ', mb_substr($sourceStr, 0, $maxLength));
             array_pop($words);
-            return implode(' ',$words);
-        }
-        else
-        {
+            return implode(' ', $words);
+        } else {
             return $this->lead;
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public function uploadImage($formFieldName)
     {
-        if ($this->image) {                 //Удаляем предыдущую картику, что-бы не засорять сервер клонами и мусором
-            $realUploadPath = \T4\Fs\Helpers::getRealPath($this->image);
-            @unlink($realUploadPath);
-        }
         $request = Application::getInstance()->request;
         if (!$request->existsFilesData() || !$request->isUploaded($formFieldName) || $request->isUploadedArray($formFieldName))
             return $this;
-
         try {
             $uploader = new Uploader($formFieldName);
             $uploader->setPath('/public/news/stories/images');
@@ -79,11 +51,17 @@ class Story
             if ($this->image) {
                 $this->deleteImage();
             }
+
             $this->image = $image;
             $realUploadPath = \T4\Fs\Helpers::getRealPath($image);  // Смотрим где находится картинка
             $this->loadImage($realUploadPath);                      // Загружаем для изменений
-            $this->resizeImage(120,100);                            // Изменяем. Можно попробовать просто по ширине
-            $this->saveImage($realUploadPath);                      // Сохраняем изменения в то место, откуда взяли
+            $this->resizeImage(150, 100);                           // Изменяем. Можно попробовать просто по ширине
+            $this->saveImage($realUploadPath);                      // Сохраняем изменения
+            $this->saveImage($_SERVER['DOCUMENT_ROOT'] . $this->image); //Сохраняю повторно в для своего хостинга
+                                                                    // (для KDM44 не надо будет) т.к. Т4 (или Я)
+                                                                    //  Helpers-ом не видит root-директорию /public_html
+                                                                    // а видит её просто как public, без _html.
+                                                                    //Скорее всего я что-то не понимаю, но пишу на всякий случай, вдруг это важно.
         } catch (Exception $e) {
             $this->image = null;
         }
@@ -140,16 +118,22 @@ class Story
         return true;
     }
 
-    function loadImage($filename) {
-        $imageinfo = getimagesize($filename);
-        $this->imagetype = $imageinfo[2];
-        if( $this->imagetype == IMAGETYPE_JPEG ) {
-            $this->imageres = imagecreatefromjpeg($filename);
-        } elseif( $this->imagetype == IMAGETYPE_GIF ) {
-            $this->imageres = imagecreatefromgif($filename);
-        } elseif( $this->imagetype == IMAGETYPE_PNG ) {
-            $this->imageres = imagecreatefrompng($filename);
+    function loadImage($filename)
+    {
+        try {
+            $imageinfo = getimagesize($filename);
+            $this->imagetype = $imageinfo[2];
+            if ($this->imagetype == IMAGETYPE_JPEG) {
+                $this->imageres = imagecreatefromjpeg($filename);
+            } elseif ($this->imagetype == IMAGETYPE_GIF) {
+                $this->imageres = imagecreatefromgif($filename);
+            } elseif ($this->imagetype == IMAGETYPE_PNG) {
+                $this->imageres = imagecreatefrompng($filename);
+            }
+        } catch (\T4\Fs\Exception $e) {
+            return false;
         }
+        return true;
     }
 
     function getWidth()
@@ -162,23 +146,34 @@ class Story
         return imagesy($this->imageres);
     }
 
-    function resizeImage($width,$height)
+    function resizeImage($width, $height)
     {
-        $newimage = imagecreatetruecolor($width, $height);
-        imagecopyresampled($newimage, $this->imageres, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
-        $this->imageres = $newimage;
+        try {
+            $newimage = imagecreatetruecolor($width, $height);
+            imagecopyresampled($newimage, $this->imageres, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
+            $this->imageres = $newimage;
+        } catch (\T4\Fs\Exception $e) {
+            return false;
+        }
+        return true;
     }
 
-    function saveImage($filename, $imagetype=IMAGETYPE_JPEG, $compression=75, $permissions=null) {
-        if( $imagetype == IMAGETYPE_JPEG ) {
-            imagejpeg($this->imageres,$filename,$compression);
-        } elseif( $imagetype == IMAGETYPE_GIF ) {
-            imagegif($this->imageres,$filename);
-        } elseif( $imagetype == IMAGETYPE_PNG ) {
-            imagepng($this->imageres,$filename);
+    function saveImage($filename, $imagetype = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
+    {
+        try {
+            if ($imagetype == IMAGETYPE_JPEG) {
+                imagejpeg($this->imageres, $filename, $compression);
+            } elseif ($imagetype == IMAGETYPE_GIF) {
+                imagegif($this->imageres, $filename);
+            } elseif ($imagetype == IMAGETYPE_PNG) {
+                imagepng($this->imageres, $filename);
+            }
+            if ($permissions != null) {
+                chmod($filename, $permissions);
+            }
+        } catch (\T4\Fs\Exception $e) {
+            return false;
         }
-        if( $permissions != null) {
-            chmod($filename,$permissions);
-        }
+        return true;
     }
 }
