@@ -10,24 +10,24 @@ class ImageProcessor
         $this->imagepath = $imagepath;
     }
 
-    static public function filterResize($imagepath,$width, $height)
+    public function filterResize($width, $height)
     {
         $newimage = imagecreatetruecolor($width, $height);
-        $image = self::loadImage($imagepath);
+        $image = self::loadImage();
         imagecopyresampled($newimage, $image, 0, 0, 0, 0, $width, $height, self::getWidth($image),self::getHeight($image));
         return $newimage;
     }
 
-    private function loadImage($imagepath)
+    private function loadImage()
     {
-            $imageinfo = getimagesize($imagepath);
+            $imageinfo = getimagesize($this->imagepath);
             $imagetype = $imageinfo[2];
             if ($imagetype == IMAGETYPE_JPEG) {
-                $image = imagecreatefromjpeg($imagepath);
+                $image = imagecreatefromjpeg($this->imagepath);
             } elseif ($imagetype == IMAGETYPE_GIF) {
-                $image = imagecreatefromgif($imagepath);
+                $image = imagecreatefromgif($this->imagepath);
             } elseif ($imagetype == IMAGETYPE_PNG) {
-                $image = imagecreatefrompng($imagepath);
+                $image = imagecreatefrompng($this->imagepath);
             } else {
                 echo 'File should be:  .jpg  or .png or .gif';  // тут надо будет кинуть исключение, если это не проверяется ранее
                 return false;
@@ -45,17 +45,17 @@ class ImageProcessor
         return imagesy($image);
     }
 
-    static public function save($imagepath, $image, $imagetype = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
+    public function save($image, $imagetype = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
     {
             if ($imagetype == IMAGETYPE_JPEG) {
-                imagejpeg($image, $imagepath, $compression);
+                imagejpeg($image, $this->imagepath, $compression);
             } elseif ($imagetype == IMAGETYPE_GIF) {
-                imagegif($image, $imagepath);
+                imagegif($image, $this->imagepath);
             } elseif ($imagetype == IMAGETYPE_PNG) {
-                imagepng($image, $imagepath);
+                imagepng($image, $this->imagepath);
             }
             if ($permissions != null) {
-                chmod($imagepath, $permissions);
+                chmod($this->imagepath, $permissions);
             }
     }
 
