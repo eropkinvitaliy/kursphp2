@@ -8,6 +8,7 @@ use T4\Fs\Helpers;
 use T4\Http\Uploader;
 use T4\Mvc\Application;
 use T4\Orm\Model;
+use App\Components;
 
 class Story
     extends Model
@@ -51,14 +52,12 @@ class Story
             if ($this->image) {
                 $this->deleteImage();
             }
-
             $this->image = $image;
-            $realUploadPath = \T4\Fs\Helpers::getRealPath($image);  // Смотрим где находится картинка
-            $this->loadImage($realUploadPath);                      // Загружаем для изменений
-            $this->resizeImage(150, 100);                           // Изменяем. Можно попробовать просто по ширине
-            $this->saveImage($realUploadPath);                      // Сохраняем изменения
-            $this->saveImage($_SERVER['DOCUMENT_ROOT'] . $this->image); //Сохраняю повторно в для своего хостинга
-                                                                    // (для KDM44 не надо будет) т.к. Т4 (или Я)
+            $realUploadPath = \T4\Fs\Helpers::getRealPath($image);
+            $imageresurs = \App\Components\ImageProcessor::filterResize($realUploadPath,150, 100);
+            \App\Components\ImageProcessor::save($realUploadPath,$imageresurs);
+//            $this->saveImage($_SERVER['DOCUMENT_ROOT'] . $this->image); //Сохраняю повторно в для своего хостинга
+                                                                   // (для KDM44 не надо будет) т.к. Т4 (или Я)
                                                                     //  Helpers-ом не видит root-директорию /public_html
                                                                     // а видит её просто как public, без _html.
                                                                     //Скорее всего я что-то не понимаю, но пишу на всякий случай, вдруг это важно.
@@ -114,65 +113,6 @@ class Story
             } catch (\T4\Fs\Exception $e) {
                 return false;
             }
-        }
-        return true;
-    }
-
-    function loadImage($filename)
-    {
-        try {
-            $imageinfo = getimagesize($filename);
-            $this->imagetype = $imageinfo[2];
-            if ($this->imagetype == IMAGETYPE_JPEG) {
-                $this->imageres = imagecreatefromjpeg($filename);
-            } elseif ($this->imagetype == IMAGETYPE_GIF) {
-                $this->imageres = imagecreatefromgif($filename);
-            } elseif ($this->imagetype == IMAGETYPE_PNG) {
-                $this->imageres = imagecreatefrompng($filename);
-            }
-        } catch (\T4\Fs\Exception $e) {
-            return false;
-        }
-        return true;
-    }
-
-    function getWidth()
-    {
-        return imagesx($this->imageres);
-    }
-
-    function getHeight()
-    {
-        return imagesy($this->imageres);
-    }
-
-    function resizeImage($width, $height)
-    {
-        try {
-            $newimage = imagecreatetruecolor($width, $height);
-            imagecopyresampled($newimage, $this->imageres, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
-            $this->imageres = $newimage;
-        } catch (\T4\Fs\Exception $e) {
-            return false;
-        }
-        return true;
-    }
-
-    function saveImage($filename, $imagetype = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
-    {
-        try {
-            if ($imagetype == IMAGETYPE_JPEG) {
-                imagejpeg($this->imageres, $filename, $compression);
-            } elseif ($imagetype == IMAGETYPE_GIF) {
-                imagegif($this->imageres, $filename);
-            } elseif ($imagetype == IMAGETYPE_PNG) {
-                imagepng($this->imageres, $filename);
-            }
-            if ($permissions != null) {
-                chmod($filename, $permissions);
-            }
-        } catch (\T4\Fs\Exception $e) {
-            return false;
         }
         return true;
     }
