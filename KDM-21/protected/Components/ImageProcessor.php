@@ -23,16 +23,16 @@ class ImageProcessor
             $imageinfo = getimagesize($imagepath);
             $imagetype = $imageinfo[2];
             if ($imagetype == IMAGETYPE_JPEG) {
-                $imageres = imagecreatefromjpeg($imagepath);
+                $image = imagecreatefromjpeg($imagepath);
             } elseif ($imagetype == IMAGETYPE_GIF) {
-                $imageres = imagecreatefromgif($imagepath);
+                $image = imagecreatefromgif($imagepath);
             } elseif ($imagetype == IMAGETYPE_PNG) {
-                $imageres = imagecreatefrompng($imagepath);
+                $image = imagecreatefrompng($imagepath);
             } else {
                 echo 'File should be:  .jpg  or .png or .gif';  // тут надо будет кинуть исключение, если это не проверяется ранее
                 return false;
                 }
-        return $imageres;
+        return $image;
     }
 
     static private function getWidth($image)
