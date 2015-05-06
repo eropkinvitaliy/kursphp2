@@ -10,15 +10,8 @@ class ImageProcessor
     public function __construct($path)
     {
         $this->path = \T4\Fs\Helpers::getRealPath($path);
-        $imageinfo = getimagesize($this->path);
-        $imagetype = $imageinfo[2];
-        if ($imagetype == IMAGETYPE_JPEG) {
-            $this->image = imagecreatefromjpeg($this->path);
-        } elseif ($imagetype == IMAGETYPE_GIF) {
-            $this->image = imagecreatefromgif($this->path);
-        } elseif ($imagetype == IMAGETYPE_PNG) {
-            $this->image = imagecreatefrompng($this->path);
-        }
+        $imgdata = file_get_contents($this->path);
+        $this->image = imagecreatefromstring($imgdata);
     }
 
     public function filterResize($width, $height)
