@@ -53,6 +53,8 @@ class Story
                 $this->deleteImage();
             }
             $this->image = $image;
+            $a = new Components\ImageProcessor($image);
+            $a->filterResize(150,100)->save();
         } catch (Exception $e) {
             $this->image = null;
         }

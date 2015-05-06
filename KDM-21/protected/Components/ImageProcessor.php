@@ -9,7 +9,7 @@ class ImageProcessor
 
     public function __construct($path)
     {
-        $this->pathToImage = \T4\Fs\Helpers::getRealPath($path);
+        $this->path = \T4\Fs\Helpers::getRealPath($path);
         $imageinfo = getimagesize($this->path);
         $imagetype = $imageinfo[2];
         if ($imagetype == IMAGETYPE_JPEG) {
@@ -34,25 +34,27 @@ class ImageProcessor
     {
         $ratio = $height / $this->getHeight();
         $width = $this->getWidth() * $ratio;
-        $this->filterResize($width,$height);
+        $this->filterResize($width, $height);
         return $this;
     }
+
     public function filterResizeToWidth($width)
     {
         $ratio = $width / $this->getWidth();
         $height = $this->getHeight() * $ratio;
-        $this->filterResize($width,$height);
-        return $this;
-    }
-    public function filterZoom($zoom)
-    {
-        $width = $this->getWidth() * $zoom/100;
-        $height = $this->getHeight() * $zoom/100;
-        $this->filterResize($width,$height);
+        $this->filterResize($width, $height);
         return $this;
     }
 
-     public function save($imagetype = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
+    public function filterZoom($zoom)
+    {
+        $width = $this->getWidth() * $zoom / 100;
+        $height = $this->getHeight() * $zoom / 100;
+        $this->filterResize($width, $height);
+        return $this;
+    }
+
+    public function save($imagetype = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
     {
         if ($imagetype == IMAGETYPE_JPEG) {
             imagejpeg($this->image, $this->path, $compression);
@@ -66,6 +68,7 @@ class ImageProcessor
         }
         return $this;
     }
+
     public function getWidth()
     {
         return imagesx($this->image);
