@@ -53,17 +53,6 @@ class Story
                 $this->deleteImage();
             }
             $this->image = $image;
-            $realUploadPath = \T4\Fs\Helpers::getRealPath($image);
-            $imageProcessor = new Components\ImageProcessor($realUploadPath);
-            $imageresurs = $imageProcessor->filterResize(150,100);
-            $imageProcessor->save($imageresurs);
-//            $imageresurs = \App\Components\ImageProcessor::filterResize($realUploadPath,150, 100);
-//            \App\Components\ImageProcessor::save($realUploadPath,$imageresurs);
-//            $this->saveImage($_SERVER['DOCUMENT_ROOT'] . $this->image); //Сохраняю повторно в для своего хостинга
-                                                                   // (для KDM44 не надо будет) т.к. Т4 (или Я)
-                                                                    //  Helpers-ом не видит root-директорию /public_html
-                                                                    // а видит её просто как public, без _html.
-                                                                    //Скорее всего я что-то не понимаю, но пишу на всякий случай, вдруг это важно.
         } catch (Exception $e) {
             $this->image = null;
         }

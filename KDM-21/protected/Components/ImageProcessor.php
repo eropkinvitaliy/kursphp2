@@ -4,59 +4,72 @@ namespace App\Components;
 
 class ImageProcessor
 {
+    public $image;
+    public $newimage;
+    public $imagepath;
 
     public function __construct($imagepath)
     {
-        $this->imagepath = $imagepath;
+        $this->imagepath = \T4\Fs\Helpers::getRealPath($imagepath);
+        $imageinfo = getimagesize($this->imagepath);
+        $imagetype = $imageinfo[2];
+        if ($imagetype == IMAGETYPE_JPEG) {
+            $this->image = imagecreatefromjpeg($this->imagepath);
+        } elseif ($imagetype == IMAGETYPE_GIF) {
+            $this->image = imagecreatefromgif($this->imagepath);
+        } elseif ($imagetype == IMAGETYPE_PNG) {
+            $this->image = imagecreatefrompng($this->imagepath);
+        }
     }
 
     public function filterResize($width, $height)
     {
-        $newimage = imagecreatetruecolor($width, $height);
-        $image = self::loadImage();
-        imagecopyresampled($newimage, $image, 0, 0, 0, 0, $width, $height, self::getWidth($image),self::getHeight($image));
-        return $newimage;
+        $this->newimage = imagecreatetruecolor($width, $height);
+        imagecopyresampled($this->newimage, $this->image, 0, 0, 0, 0, $width, $height,
+                            $this->getWidth(), $this->getHeight());
     }
 
-    private function loadImage()
+    public function filterResizeToHeight($height)
     {
-            $imageinfo = getimagesize($this->imagepath);
-            $imagetype = $imageinfo[2];
-            if ($imagetype == IMAGETYPE_JPEG) {
-                $image = imagecreatefromjpeg($this->imagepath);
-            } elseif ($imagetype == IMAGETYPE_GIF) {
-                $image = imagecreatefromgif($this->imagepath);
-            } elseif ($imagetype == IMAGETYPE_PNG) {
-                $image = imagecreatefrompng($this->imagepath);
-            } else {
-                echo 'File should be:  .jpg  or .png or .gif';  // тут надо будет кинуть исключение, если это не проверяется ранее
-                return false;
-                }
-        return $image;
+        $ratio = $height / $this->getHeight();
+        $width = $this->getWidth() * $ratio;
+        $this->filterResize($width,$height);
+    }
+    public function filterResizeToWidth($width)
+    {
+        $ratio = $width / $this->getWidth();
+        $height = $this->getheight() * $ratio;
+        $this->filterResize($width,$height);
+    }
+    public function filterZoom($zoom)
+    {
+        $width = $this->getWidth() * $zoom/100;
+        $height = $this->getheight() * $zoom/100;
+        $this->filterResize($width,$height);
     }
 
-    static private function getWidth($image)
+    public function getWidth()
     {
-        return imagesx($image);
+        return imagesx($this->image);
     }
 
-    static private function getHeight($image)
+    public function getHeight()
     {
-        return imagesy($image);
+        return imagesy($this->image);
     }
 
-    public function save($image, $imagetype = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
+    public function save($imagetype = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
     {
-            if ($imagetype == IMAGETYPE_JPEG) {
-                imagejpeg($image, $this->imagepath, $compression);
-            } elseif ($imagetype == IMAGETYPE_GIF) {
-                imagegif($image, $this->imagepath);
-            } elseif ($imagetype == IMAGETYPE_PNG) {
-                imagepng($image, $this->imagepath);
-            }
-            if ($permissions != null) {
-                chmod($this->imagepath, $permissions);
-            }
+        if ($imagetype == IMAGETYPE_JPEG) {
+            imagejpeg($this->newimage, $this->imagepath, $compression);
+        } elseif ($imagetype == IMAGETYPE_GIF) {
+            imagegif($this->newimage, $this->imagepath);
+        } elseif ($imagetype == IMAGETYPE_PNG) {
+            imagepng($this->newimage, $this->imagepath);
+        }
+        if ($permissions != null) {
+            chmod($this->imagepath, $permissions);
+        }
     }
 
 } 
