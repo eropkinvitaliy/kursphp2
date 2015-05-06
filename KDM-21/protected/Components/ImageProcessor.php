@@ -6,19 +6,19 @@ class ImageProcessor
 {
     public $image;
     public $newimage;
-    public $imagepath;
+    public $pathToImage;
 
-    public function __construct($imagepath)
+    public function __construct($pathToImage)
     {
-        $this->imagepath = \T4\Fs\Helpers::getRealPath($imagepath);
-        $imageinfo = getimagesize($this->imagepath);
+        $this->pathToImage = \T4\Fs\Helpers::getRealPath($pathToImage);
+        $imageinfo = getimagesize($this->pathToImage);
         $imagetype = $imageinfo[2];
         if ($imagetype == IMAGETYPE_JPEG) {
-            $this->image = imagecreatefromjpeg($this->imagepath);
+            $this->image = imagecreatefromjpeg($this->pathToImage);
         } elseif ($imagetype == IMAGETYPE_GIF) {
-            $this->image = imagecreatefromgif($this->imagepath);
+            $this->image = imagecreatefromgif($this->pathToImage);
         } elseif ($imagetype == IMAGETYPE_PNG) {
-            $this->image = imagecreatefrompng($this->imagepath);
+            $this->image = imagecreatefrompng($this->pathToImage);
         }
     }
 
@@ -61,14 +61,14 @@ class ImageProcessor
     public function save($imagetype = IMAGETYPE_JPEG, $compression = 75, $permissions = null)
     {
         if ($imagetype == IMAGETYPE_JPEG) {
-            imagejpeg($this->newimage, $this->imagepath, $compression);
+            imagejpeg($this->newimage, $this->pathToImage, $compression);
         } elseif ($imagetype == IMAGETYPE_GIF) {
-            imagegif($this->newimage, $this->imagepath);
+            imagegif($this->newimage, $this->pathToImage);
         } elseif ($imagetype == IMAGETYPE_PNG) {
-            imagepng($this->newimage, $this->imagepath);
+            imagepng($this->newimage, $this->pathToImage);
         }
         if ($permissions != null) {
-            chmod($this->imagepath, $permissions);
+            chmod($this->pathToImage, $permissions);
         }
     }
 
