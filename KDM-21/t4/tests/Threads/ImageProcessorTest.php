@@ -10,7 +10,8 @@ class ImageProcessorTest
     {
         $testImage = new \T4\Threads\ImageProcessor2('/test.jpg');
         $testImage->filterResize(150, 100)->save();
-        $testImageSize = getimagesize($testImage->path);
+        $path = \T4\Fs\Helpers::getRealPath('/test.jpg');
+        $testImageSize = getimagesize($path);
         $this->assertEquals(150, $testImageSize[0]);
         $this->assertEquals(100, $testImageSize[1]);
     }
@@ -19,7 +20,8 @@ class ImageProcessorTest
     {
         $testImage = new \T4\Threads\ImageProcessor2('/test.jpg');
         $testImage->filterResizeToHeight(800)->save();
-        $testImageSize = getimagesize($testImage->path);
+        $path = \T4\Fs\Helpers::getRealPath('/test.jpg');
+        $testImageSize = getimagesize($path);
         $this->assertEquals(800, $testImageSize[1]);
     }
 
@@ -27,16 +29,18 @@ class ImageProcessorTest
     {
         $testImage = new \T4\Threads\ImageProcessor2('/test.jpg');
         $testImage->filterResizeToWidth(1280)->save();
-        $testImageSize = getimagesize($testImage->path);
+        $path = \T4\Fs\Helpers::getRealPath('/test.jpg');
+        $testImageSize = getimagesize($path);
         $this->assertEquals(1280, $testImageSize[0]);
     }
 
     public function testFilterZoom()
     {
         $testImage = new \T4\Threads\ImageProcessor2('/test.jpg');
-        $testImage->beforeImageSize = getimagesize($testImage->path);
+        $path = \T4\Fs\Helpers::getRealPath('/test.jpg');
+        $testImage->beforeImageSize = getimagesize($path);
         $testImage->filterZoom(30)->save();
-        $testImageSize = getimagesize($testImage->path);
+        $testImageSize = getimagesize($path);
         $testImage->beforeImageSize[0] *= 0.3;
         $testImage->beforeImageSize[1] *= 0.3;
         $this->assertEquals($testImage->beforeImageSize[0], $testImageSize[0], 'Отличается более чем на 1px', 1.0);

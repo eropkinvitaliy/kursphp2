@@ -4,8 +4,6 @@ namespace T4\Threads;
 
 class ImageProcessor2
 {
-    public $image;
-    public $path;
 
     public function __construct($path)
     {
