@@ -1,6 +1,6 @@
 <?php
 
-namespace T4\Threads;
+namespace T4\Fs;
 
 class ImageProcessor
 {

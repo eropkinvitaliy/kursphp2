@@ -8,7 +8,7 @@ class ImageProcessorTest
 
     public function testFilterResize()
     {
-        $testImage = new \T4\Threads\ImageProcessor('/test.jpg');
+        $testImage = new \T4\Fs\ImageProcessor('/test.jpg');
         $testImage->filterResize(150, 100)->save();
         $path = \T4\Fs\Helpers::getRealPath('/test.jpg');
         $testImageSize = getimagesize($path);
@@ -18,7 +18,7 @@ class ImageProcessorTest
 
     public function testFilterResizeToHeight()
     {
-        $testImage = new \T4\Threads\ImageProcessor('/test.jpg');
+        $testImage = new \T4\Fs\ImageProcessor('/test.jpg');
         $testImage->filterResizeToHeight(800)->save();
         $path = \T4\Fs\Helpers::getRealPath('/test.jpg');
         $testImageSize = getimagesize($path);
@@ -27,7 +27,7 @@ class ImageProcessorTest
 
     public function testFilterResizeToWidth()
     {
-        $testImage = new \T4\Threads\ImageProcessor('/test.jpg');
+        $testImage = new \T4\Fs\ImageProcessor('/test.jpg');
         $testImage->filterResizeToWidth(1280)->save();
         $path = \T4\Fs\Helpers::getRealPath('/test.jpg');
         $testImageSize = getimagesize($path);
@@ -36,7 +36,7 @@ class ImageProcessorTest
 
     public function testFilterZoom()
     {
-        $testImage = new \T4\Threads\ImageProcessor('/test.jpg');
+        $testImage = new \T4\Fs\ImageProcessor('/test.jpg');
         $path = \T4\Fs\Helpers::getRealPath('/test.jpg');
         $testImage->beforeImageSize = getimagesize($path);
         $testImage->filterZoom(30)->save();
