@@ -9,6 +9,7 @@ use T4\Http\Uploader;
 use T4\Mvc\Application;
 use T4\Orm\Model;
 use App\Components;
+use T4\Threads;
 
 class Story
     extends Model
@@ -53,8 +54,6 @@ class Story
                 $this->deleteImage();
             }
             $this->image = $image;
-            $a = new Components\ImageProcessor($image);
-            $a->filterResize(150,100)->save();
         } catch (Exception $e) {
             $this->image = null;
         }

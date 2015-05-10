@@ -15,26 +15,25 @@ class Index
 
     public function actionDefault()
     {
-
     }
 
     public function action404()
     {
     }
 
-    public function actionLogin($email=null, $password=null, $return='/')
+    public function actionLogin($email = null, $password = null, $return = '/')
     {
         $this->data->error = $this->app->flash->error;
         if (!empty($email) && !empty($password)) {
             try {
                 $identity = new Identity();
-                $identity->authenticate(new Std(['email'=>$email, 'password'=>$password]));
+                $identity->authenticate(new Std(['email' => $email, 'password' => $password]));
                 $this->redirect($return);
             } catch (Exception $e) {
                 $this->app->flash->error = $e->getMessage();
             }
         }
-        $this->data->email  = $email;
+        $this->data->email = $email;
         $this->data->return = $return;
     }
 
@@ -74,7 +73,7 @@ class Index
         }
     }
 
-    public function actionBlockHtml($html='')
+    public function actionBlockHtml($html = '')
     {
         $this->data->html = $html;
     }
